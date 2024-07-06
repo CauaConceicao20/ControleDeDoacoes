@@ -22,6 +22,7 @@ public class Alimento extends Item implements Serializable {
     @JoinColumn(name = "distribuidora_id")
     private Distribuidora distribuidora;
 
+
     public Alimento(Long id, String tipo, String descricao, int quantidade, String unidadeDeMedida, Date validade, Distribuidora distribuidora) {
         super(id, tipo, descricao);
         this.quantidade = quantidade;

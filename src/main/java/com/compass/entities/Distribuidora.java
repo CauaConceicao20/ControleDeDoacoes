@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_distribuidora")
+@Table(name = "tb_distribuidoras")
 public class Distribuidora implements Serializable {
 
     private static final long serialVersionUID= 1L;
