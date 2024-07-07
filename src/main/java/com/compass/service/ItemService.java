@@ -11,7 +11,7 @@ public class ItemService {
 
     public void addItemsCsv(List<Item> items) {
         for(Item item : items) {
-            itemDao.addItem(item);
+            itemDao.addItemBd(item);
         }
     }
 

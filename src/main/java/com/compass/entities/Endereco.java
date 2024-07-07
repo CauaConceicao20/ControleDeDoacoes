@@ -17,7 +17,7 @@ public class Endereco {
 
     private String cep;
 
-    Endereco(){
+    public Endereco(){
 
     }
 

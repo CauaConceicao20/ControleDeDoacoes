@@ -1,19 +1,19 @@
 package com.compass.dao;
 
-import com.compass.entities.Item;
+import com.compass.entities.Abrigo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-
-public class ItemDao {
+public class AbrigoDao {
 
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("ex-jpa");
     EntityManager em = emf.createEntityManager();
 
-    public void addItemBd(Item item) {
+    public void addAbrigoBd(Abrigo abrigo) {
         em.getTransaction().begin();
-        em.persist(item);
+        em.persist(abrigo);
         em.getTransaction().commit();
     }
+
 }

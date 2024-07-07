@@ -14,13 +14,13 @@ public class DistribuidoraDao {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("ex-jpa");
     EntityManager em = emf.createEntityManager();
 
-    public void addDistribuidora(Distribuidora distribuidora) {
+    public void addDistribuidoraBd(Distribuidora distribuidora) {
         em.getTransaction().begin();
         em.persist(distribuidora);
         em.getTransaction().commit();
     }
 
-    public List<Distribuidora> listaDistribuidoras() {
+    public List<Distribuidora> listaDistribuidorasBd() {
         Query query = em.createQuery("SELECT e FROM Distribuidora e");
         return query.getResultList();
     }

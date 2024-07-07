@@ -24,11 +24,10 @@ public class Pessoa implements Serializable {
 
     }
 
-    public Pessoa(Long id, String nome, String cpf, Abrigo abrigo) {
+    public Pessoa(Long id, String nome, String cpf) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
-        this.abrigo = abrigo;
     }
 
     public Long getId() {

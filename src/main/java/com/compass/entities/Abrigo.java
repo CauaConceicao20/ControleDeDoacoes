@@ -3,6 +3,8 @@ package com.compass.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Random;
 
 @Entity
 @Table(name = "tb_abrigos")
@@ -21,19 +23,20 @@ public class Abrigo implements Serializable {
     @OneToOne
     @MapsId
     private Pessoa responsavel;
+
     private String telefone;
 
     private String email;
 
     private int capacidade;
 
-    private double ocupacao;
+    private double porcentagemOcupacao;
 
     public Abrigo() {
 
     }
 
-    public Abrigo(Long id, String nome, Endereco endereco, Pessoa responsavel, String telefone, String email, int capacidade, double ocupacao) {
+    public Abrigo(Long id, String nome, Endereco endereco, Pessoa responsavel, String telefone, String email, int capacidade) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -41,7 +44,14 @@ public class Abrigo implements Serializable {
         this.telefone = telefone;
         this.email = email;
         this.capacidade = capacidade;
-        this.ocupacao = ocupacao;
+        this.porcentagemOcupacao = retornaPorcentagem();
+    }
+
+    public double retornaPorcentagem() {
+        Random random = new Random();
+        int numeroDeAbrigados = random.nextInt(capacidade - 1) + 1;
+        double porcentagem = (double) numeroDeAbrigados / capacidade * 100;
+        return  Math.round(porcentagem * 10.0) / 10.0;
     }
 
     public Long getId() {
@@ -101,10 +111,36 @@ public class Abrigo implements Serializable {
     }
 
     public double getOcupacao() {
-        return ocupacao;
+        return porcentagemOcupacao;
     }
 
     public void setOcupacao(double ocupacao) {
-        this.ocupacao = ocupacao;
+        this.porcentagemOcupacao = ocupacao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Abrigo abrigo)) return false;
+        return Objects.equals(getId(), abrigo.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Abrigo{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", endereco=" + endereco +
+                ", responsavel=" + responsavel +
+                ", telefone='" + telefone + '\'' +
+                ", email='" + email + '\'' +
+                ", capacidade=" + capacidade +
+                ", ocupacao=" + porcentagemOcupacao + "%" +
+                '}';
     }
 }
