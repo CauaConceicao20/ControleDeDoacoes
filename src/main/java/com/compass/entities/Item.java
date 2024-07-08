@@ -5,11 +5,11 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-
 @MappedSuperclass
 public class Item implements Serializable {
 
     private static final long serialVersionUID= 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,14 @@ public class Item implements Serializable {
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
