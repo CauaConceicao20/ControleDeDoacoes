@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_pedido")
@@ -16,14 +17,22 @@ public class Pedido implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Instant momento;
-
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private PedidoStatus pedidoStatus;
 
-    public Pedido(Long id, Instant momento, PedidoStatus pedidoStatus) {
+    @ManyToOne
+    @JoinColumn(name = "abrigo_id")
+    private Abrigo abrigo;
+
+    @ManyToOne
+    @JoinColumn(name = "distribuidora_id")
+    private Distribuidora distribuidora;
+
+    @OneToMany(mappedBy = "id.pedidoId")
+    private List<PedidoItem> items = new ArrayList<>();
+
+    public Pedido(Long id, PedidoStatus pedidoStatus) {
         this.id = id;
-        this.momento = momento;
         this.pedidoStatus = pedidoStatus;
     }
 
@@ -35,19 +44,35 @@ public class Pedido implements Serializable {
         this.id = id;
     }
 
-    public Instant getMomento() {
-        return momento;
-    }
-
-    public void setMomento(Instant momento) {
-        this.momento = momento;
-    }
-
     public PedidoStatus getPedidoStatus() {
         return pedidoStatus;
     }
 
     public void setPedidoStatus(PedidoStatus pedidoStatus) {
         this.pedidoStatus = pedidoStatus;
+    }
+
+    public List<PedidoItem> getItems() {
+        return items;
+    }
+
+    public Abrigo getAbrigo() {
+        return abrigo;
+    }
+
+    public Distribuidora getDistribuidora() {
+        return distribuidora;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pedido pedido)) return false;
+        return Objects.equals(getId(), pedido.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

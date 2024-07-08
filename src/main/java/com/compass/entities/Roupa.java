@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_roupas")
+@DiscriminatorValue("Roupa")
 public class Roupa extends Item implements Serializable {
     private static final long serialVersionUID= 1L;
 
@@ -20,8 +20,19 @@ public class Roupa extends Item implements Serializable {
     @JoinColumn(name = "distribuidora_id")
     private Distribuidora distribuidora;
 
+    public Roupa() {
+
+    }
+
     public Roupa(Long id, String tipo, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
         super(id, tipo ,descricao);
+        this.genero = genero;
+        this.tamanho = tamanho;
+        this.distribuidora = distribuidora;
+    }
+
+    public Roupa(Long id, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
+        super();
         this.genero = genero;
         this.tamanho = tamanho;
         this.distribuidora = distribuidora;

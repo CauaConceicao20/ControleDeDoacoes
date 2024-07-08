@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@MappedSuperclass
-public class Item implements Serializable {
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
+public abstract class Item implements Serializable {
 
     private static final long serialVersionUID= 1L;
 
@@ -14,11 +16,14 @@ public class Item implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
     private String tipo;
 
     private String descricao;
 
+    public Item() {
 
+    }
     public Item(Long id, String tipo, String descricao) {
         this.id = id;
         this.tipo = tipo;
@@ -31,6 +36,22 @@ public class Item implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTipo() {
+        return this.tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     @Override

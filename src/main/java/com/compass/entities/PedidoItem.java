@@ -21,18 +21,26 @@ public class PedidoItem implements Serializable {
     public PedidoItem() {
 
     }
-    public PedidoItem(Pedido pedido, Long itemId, Integer quantidade) {
-        id.setPedido(pedido.getId());
+    public PedidoItem(Pedido pedido, Item itemId, Integer quantidade) {
+        id.setPedido(pedido);
         id.setItem(itemId);
         this.quantidade = quantidade;
     }
 
-    public Long getPedido() {
+    public Pedido getPedido() {
         return id.getPedido();
     }
 
-    public void setPedido(Long pedidoId) {
+    public void setPedido(Pedido pedidoId) {
         id.setPedido(pedidoId);
+    }
+
+    public Item getItem() {
+        return id.getItem();
+    }
+
+    public void setProduct(Item item) {
+        id.setItem(item);
     }
 
     public Integer getQuantidade() {
@@ -47,12 +55,12 @@ public class PedidoItem implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PedidoItem that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(getQuantidade(), that.getQuantidade());
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getQuantidade());
+        return Objects.hash(id);
     }
 }
 

@@ -1,9 +1,10 @@
 package com.compass.dao;
 
 import com.compass.entities.Item;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import com.compass.entities.Roupa;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 
 public class ItemDao {
@@ -14,6 +15,13 @@ public class ItemDao {
     public void addItemBd(Item item) {
         em.getTransaction().begin();
         em.persist(item);
+        em.flush();
         em.getTransaction().commit();
+    }
+
+    public List<Item> retornaItemBd() {
+        String hql = "SELECT e FROM Item e";
+        TypedQuery<Item> query = em.createQuery(hql, Item.class);
+        return query.getResultList();
     }
 }

@@ -44,7 +44,7 @@ public class CsvReader {
             String[] linha;
             leia.skip(1);
             while((linha = leia.readNext()) != null) {
-                    filtraDistribuidoras(linha[0], linha, distribuidoras, items);
+                    filtraDistribuidoras(linha, distribuidoras, items);
             }
         }catch(IOException | CsvValidationException |ParseException e) {
             System.out.println(e.getMessage());
@@ -52,8 +52,8 @@ public class CsvReader {
         return items;
     }
 
-    public void filtraDistribuidoras(String tipo, String[] linha, List<Distribuidora> distribuidoras, List<Item> items) throws ParseException {
-        switch (tipo) {
+    public void filtraDistribuidoras(String[] linha, List<Distribuidora> distribuidoras, List<Item> items) throws ParseException {
+        switch (linha[0]) {
             case "Roupa":
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[4])) {

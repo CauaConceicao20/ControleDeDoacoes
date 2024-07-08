@@ -23,14 +23,7 @@ public class Distribuidora implements Serializable {
     private Endereco endereco;
 
     @OneToMany(mappedBy = "distribuidora")
-    private List<Roupa> roupas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "distribuidora")
-    private List<ProdutoHigiene> produtosHigiene = new ArrayList<>();
-
-    @OneToMany(mappedBy = "distribuidora")
-    private List<Alimento> alimentos = new ArrayList<>();
-
+    private List<Pedido> pedido;
 
     public Distribuidora() {
 
@@ -66,16 +59,8 @@ public class Distribuidora implements Serializable {
         this.endereco = endereco;
     }
 
-    public List<Roupa> getRoupa() {
-        return roupas;
-    }
-
-    public List<ProdutoHigiene> getProdutoHigiene() {
-        return produtosHigiene;
-    }
-
-    public List<Alimento> getAlimento() {
-        return alimentos;
+    public List<Pedido> getPedido() {
+        return pedido;
     }
 
     @Override

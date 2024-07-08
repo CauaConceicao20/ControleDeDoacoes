@@ -3,6 +3,7 @@ package com.compass.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -31,6 +32,9 @@ public class Abrigo implements Serializable {
     private int capacidade;
 
     private double porcentagemOcupacao;
+
+    @OneToMany(mappedBy = "abrigo")
+    private List<Pedido> pedidos;
 
     public Abrigo() {
 

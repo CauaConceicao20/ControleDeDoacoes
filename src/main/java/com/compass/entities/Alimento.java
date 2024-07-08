@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Table(name = "tb_alimentos")
+@DiscriminatorValue("Alimento")
 public class Alimento extends Item implements Serializable {
 
     private static final long serialVersionUID= 1L;
@@ -21,6 +22,9 @@ public class Alimento extends Item implements Serializable {
     @ManyToOne
     @JoinColumn(name = "distribuidora_id")
     private Distribuidora distribuidora;
+
+    public Alimento() {
+    }
 
     public Alimento(Long id, String tipo, String descricao, int quantidade, String unidadeDeMedida, Date validade, Distribuidora distribuidora) {
         super(id, tipo, descricao);
@@ -60,5 +64,18 @@ public class Alimento extends Item implements Serializable {
 
     public void setDistribuidora(Distribuidora distribuidora) {
         this.distribuidora = distribuidora;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Alimento alimento)) return false;
+        if (!super.equals(o)) return false;
+        return getQuantidade() == alimento.getQuantidade();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getQuantidade());
     }
 }

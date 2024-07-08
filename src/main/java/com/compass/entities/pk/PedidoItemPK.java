@@ -1,7 +1,11 @@
 package com.compass.entities.pk;
 
 
+import com.compass.entities.Item;
+import com.compass.entities.Pedido;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 import java.io.Serializable;
 
@@ -10,23 +14,27 @@ import java.io.Serializable;
 public class PedidoItemPK implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long pedidoId;
+    @ManyToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedidoId;
 
-    private Long itemId;
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    private Item itemId;
 
-    public Long getPedido() {
+    public Pedido getPedido() {
         return pedidoId;
     }
 
-    public void setPedido(Long pedidoId) {
+    public void setPedido(Pedido pedidoId) {
         this.pedidoId = pedidoId;
     }
 
-    public Long getItem() {
+    public Item getItem() {
         return itemId;
     }
 
-    public void setItem(Long itemId) {
+    public void setItem(Item itemId) {
         this.itemId = itemId;
     }
 
