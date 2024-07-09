@@ -12,16 +12,36 @@ public class ItemDao {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("ex-jpa");
     EntityManager em = emf.createEntityManager();
 
-    public void addItemBd(Item item) {
+    public void adiciona(Item item) {
         em.getTransaction().begin();
         em.persist(item);
         em.flush();
         em.getTransaction().commit();
     }
 
-    public List<Item> retornaItemBd() {
+    public List<Item> buscaTodos() {
         String hql = "SELECT e FROM Item e";
         TypedQuery<Item> query = em.createQuery(hql, Item.class);
         return query.getResultList();
+    }
+
+    public Item buscaPorId(Long id) {
+        Item item = em.find(Item.class, id);
+        return item;
+    }
+
+    public void alterar(Long id, String descricao) {
+        Item item = buscaPorId(id);
+        item.setDescricao(descricao);
+        adiciona(item);
+    }
+
+    public void remove(Long id) {
+        Item item = buscaPorId(id);
+        if(item != null) {
+            em.getTransaction().begin();
+            em.remove(item);
+            em.getTransaction().commit();
+        }
     }
 }

@@ -10,14 +10,25 @@ public class ItemService {
 
     ItemDao itemDao = new ItemDao();
 
-    public void addItemsCsv(List<Item> items) {
+    public void adicionaItemsCsv(List<Item> items) {
         for(Item item : items) {
-            itemDao.addItemBd(item);
+            itemDao.adiciona(item);
         }
     }
-
     public List<Item> retornaItems() {
-        return itemDao.retornaItemBd();
+        return itemDao.buscaTodos();
+    }
+
+    public Item buscaItemPorId(Long id) {
+        return itemDao.buscaPorId(id);
+    }
+
+    public void alteraItem(Long id, String descricao) {
+        itemDao.alterar(id, descricao);
+    }
+
+    public void removeItem(Long id){
+        itemDao.remove(id);
     }
 
 

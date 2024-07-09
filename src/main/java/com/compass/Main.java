@@ -35,9 +35,9 @@ public class Main {
         ItemService itemService = new ItemService();
         AbrigoService abrigoService = new AbrigoService();
 
-
+/*
         distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
-        itemService.addItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.listaDistribuidorasCsv()));
+        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.listaDistribuidorasCsv()));
 
         List<Item> list = itemService.retornaItems();
 
@@ -48,11 +48,23 @@ public class Main {
                 System.out.println("Não é do tipo roupa: " + item.getClass().getSimpleName());
             }
         }
+*/
+        itemService.removeItem(1L);
+        System.out.println("Item removido");
+
+        Item itemRecebido = itemService.buscaItemPorId(4L);
+        List<Item> items = itemService.retornaItems();
+
+
+        for(Item item : items) {
+            System.out.println(item.getDescricao());
+        }
+
+        System.out.println(itemRecebido.getDescricao());
+
+        itemService.alteraItem(8L, "Jaqueta");
 
         System.out.println("Hello world!");
-
-        System.out.println("Fazendo pergunta");
-        String text = teclado.nextLine();
 
     }
 }
