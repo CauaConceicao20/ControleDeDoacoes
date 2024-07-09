@@ -11,12 +11,12 @@ public class DistribuidoraService {
 
     public void adicionaDistribuidorasCsv(List<Distribuidora> distribuidoras) {
         for(Distribuidora distribuidora : distribuidoras) {
-            distribuidoraDao.addDistribuidoraBd(distribuidora);
+            distribuidoraDao.adiciona(distribuidora);
         }
     }
 
     public List<Distribuidora> listaDistribuidorasCsv() {
-        return distribuidoraDao.listaDistribuidorasBd();
+        return distribuidoraDao.buscaTodos();
     }
 
 }

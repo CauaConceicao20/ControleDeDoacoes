@@ -36,8 +36,8 @@ public class Main {
         AbrigoService abrigoService = new AbrigoService();
 
 /*
-        distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
-        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.listaDistribuidorasCsv()));
+        distribuidoraService.adiciona(csvReader.lerDadosDeDistribuidora());
+        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.buscaTodos()));
 
         List<Item> list = itemService.retornaItems();
 

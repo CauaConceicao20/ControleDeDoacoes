@@ -37,7 +37,11 @@ public class AbrigoDao {
     }
 
     public Abrigo buscaPorId(Long id) {
-        return em.find(Abrigo.class, id);
+        try {
+            return em.find(Abrigo.class, id);
+        }finally {
+            close();
+        }
     }
 
     public void altera(Abrigo abrigo) {
