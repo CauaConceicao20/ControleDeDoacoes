@@ -26,8 +26,7 @@ public class ItemDao {
     }
 
     public Item buscaPorId(Long id) {
-        Item item = em.find(Item.class, id);
-        return item;
+        return em.find(Item.class, id);
     }
 
     public void alterar(Long id, String descricao) {
