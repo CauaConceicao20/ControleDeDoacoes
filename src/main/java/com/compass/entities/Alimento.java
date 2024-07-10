@@ -1,5 +1,6 @@
 package com.compass.entities;
 
+import com.compass.enums.TipoItem;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,19 +20,15 @@ public class Alimento extends Item implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date validade;
 
-    @ManyToOne
-    @JoinColumn(name = "distribuidora_id")
-    private Distribuidora distribuidora;
 
     public Alimento() {
     }
 
-    public Alimento(Long id, String tipo, String descricao, int quantidade, String unidadeDeMedida, Date validade, Distribuidora distribuidora) {
-        super(id, tipo, descricao);
+    public Alimento(Long id, TipoItem tipo, String descricao, int quantidade, String unidadeDeMedida, Date validade, Distribuidora distribuidora) {
+        super(id, tipo, descricao, distribuidora);
         this.quantidade = quantidade;
         this.unidadeDeMedida = unidadeDeMedida;
         this.validade = validade;
-        this.distribuidora = distribuidora;
     }
 
     public int getQuantidade() {
@@ -56,14 +53,6 @@ public class Alimento extends Item implements Serializable {
 
     public void setValidade(Date validade) {
         this.validade = validade;
-    }
-
-    public Distribuidora getDistribuidora() {
-        return distribuidora;
-    }
-
-    public void setDistribuidora(Distribuidora distribuidora) {
-        this.distribuidora = distribuidora;
     }
 
     @Override

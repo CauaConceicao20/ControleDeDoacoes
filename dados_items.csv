@@ -7,9 +7,9 @@ Roupa,Agasalho,M,PP,1
 Roupa,Agasalho,F,M,2
 Roupa,Camisa,M,GG,3
 Roupa,Camisa,F,P,1
-ProdutoHigiene,Sabonete Liquido,3
-ProdutoHigiene,Escova de Dentes,3
-ProdutoHigiene,Sabonete,2
-ProdutoHigiene,Absorventes,1
-ProdutoHigiene,Shampo,2
-ProdutoHigiene,Pasta de Dentes,1
+Produto_Higiene,Sabonete Liquido,3
+Produto_Higiene,Escova de Dentes,3
+Produto_Higiene,Sabonete,2
+Produto_Higiene,Absorventes,1
+Produto_Higiene,Shampo,2
+Produto_Higiene,Pasta de Dentes,1

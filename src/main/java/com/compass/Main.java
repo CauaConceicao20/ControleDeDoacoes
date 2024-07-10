@@ -5,6 +5,7 @@ import com.compass.entities.*;
 import com.compass.enums.Genero;
 import com.compass.enums.PedidoStatus;
 import com.compass.enums.TamanhoRoupa;
+import com.compass.enums.TipoItem;
 import com.compass.service.AbrigoService;
 import com.compass.service.DistribuidoraService;
 import com.compass.service.ItemService;
@@ -36,8 +37,9 @@ public class Main {
         AbrigoService abrigoService = new AbrigoService();
 
 /*
-        distribuidoraService.adiciona(csvReader.lerDadosDeDistribuidora());
-        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.buscaTodos()));
+        distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
+        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.listaDistribuidorasCsv()));
+
 
         List<Item> list = itemService.retornaItems();
 
@@ -48,7 +50,7 @@ public class Main {
                 System.out.println("Não é do tipo roupa: " + item.getClass().getSimpleName());
             }
         }
-*/
+
         itemService.removeItem(1L);
         System.out.println("Item removido");
 
@@ -56,13 +58,21 @@ public class Main {
         List<Item> items = itemService.retornaItems();
 
 
+
+        List<Item> items = itemService.retornaItems();
         for(Item item : items) {
-            System.out.println(item.getDescricao());
+            System.out.println(item.getTipo());
         }
 
         System.out.println(itemRecebido.getDescricao());
 
         itemService.alteraItem(8L, "Jaqueta");
+
+  */
+
+        Roupa roupa = new Roupa(null, TipoItem.ROUPA, "Camisa", Genero.M, TamanhoRoupa.P, distribuidoraService.buscaDistribuidoraPorId(1));
+
+        itemService.adiciona(roupa);
 
         System.out.println("Hello world!");
 

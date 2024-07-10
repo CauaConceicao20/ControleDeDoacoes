@@ -2,6 +2,7 @@ package com.compass.entities;
 
 import com.compass.enums.Genero;
 import com.compass.enums.TamanhoRoupa;
+import com.compass.enums.TipoItem;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,26 +17,15 @@ public class Roupa extends Item implements Serializable {
     @Enumerated(EnumType.STRING)
     private TamanhoRoupa tamanho;
 
-    @ManyToOne
-    @JoinColumn(name = "distribuidora_id")
-    private Distribuidora distribuidora;
 
     public Roupa() {
 
     }
 
-    public Roupa(Long id, String tipo, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
-        super(id, tipo ,descricao);
+    public Roupa(Long id, TipoItem tipo, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
+        super(id, tipo ,descricao, distribuidora);
         this.genero = genero;
         this.tamanho = tamanho;
-        this.distribuidora = distribuidora;
-    }
-
-    public Roupa(Long id, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
-        super();
-        this.genero = genero;
-        this.tamanho = tamanho;
-        this.distribuidora = distribuidora;
     }
 
     public Genero getGenero() {
@@ -54,11 +44,4 @@ public class Roupa extends Item implements Serializable {
         this.tamanho = tamanho;
     }
 
-    public Distribuidora getDistribuidora() {
-        return distribuidora;
-    }
-
-    public void setDistribuidora(Distribuidora distribuidora) {
-        this.distribuidora = distribuidora;
-    }
 }

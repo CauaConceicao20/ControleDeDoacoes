@@ -4,6 +4,7 @@ package com.compass.util;
 import com.compass.entities.*;
 import com.compass.enums.Genero;
 import com.compass.enums.TamanhoRoupa;
+import com.compass.enums.TipoItem;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -53,27 +54,28 @@ public class CsvReader {
     }
 
     public void filtraDistribuidoras(String[] linha, List<Distribuidora> distribuidoras, List<Item> items) throws ParseException {
-        switch (linha[0]) {
-            case "Roupa":
+        switch (linha[0].toUpperCase()) {
+            case "ROUPA":
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[4])) {
-                        Roupa roupa = new Roupa(null, linha[0], linha[1], Genero.valueOf(linha[2]), TamanhoRoupa.valueOf(linha[3]), distribuidoraAssociada);
+                        Roupa roupa = new Roupa(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Genero.valueOf(linha[2].toUpperCase()),
+                                TamanhoRoupa.valueOf(linha[3].toUpperCase()), distribuidoraAssociada);
                         items.add(roupa);
                     }
                 }
                 break;
-            case "ProdutoHigiene" :
+            case "PRODUTO_HIGIENE" :
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[2])) {
-                        ProdutoHigiene produtoHigiene = new ProdutoHigiene(null, linha[0], linha[1], distribuidoraAssociada);
+                        ProdutoHigiene produtoHigiene = new ProdutoHigiene(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], distribuidoraAssociada);
                         items.add(produtoHigiene);
                     }
                 }
                 break;
-            case "Alimento" :
+            case "ALIMENTO" :
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[5])) {
-                        Alimento alimento = new Alimento(null, linha[0], linha[1], Integer.parseInt(linha[2]), linha[3], dateFormat.parse(linha[4]), distribuidoraAssociada);
+                        Alimento alimento = new Alimento(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Integer.parseInt(linha[2]), linha[3], dateFormat.parse(linha[4]), distribuidoraAssociada);
                         items.add(alimento);
                     }
                 }

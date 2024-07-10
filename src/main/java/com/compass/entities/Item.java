@@ -1,5 +1,6 @@
 package com.compass.entities;
 
+import com.compass.enums.TipoItem;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -17,17 +18,23 @@ public abstract class Item implements Serializable {
     private Long id;
 
     @Transient
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoItem tipo;
 
     private String descricao;
+
+    @ManyToOne
+    @JoinColumn(name = "distribuidora_id")
+    private Distribuidora distribuidora;
 
     public Item() {
 
     }
-    public Item(Long id, String tipo, String descricao) {
+    public Item(Long id, TipoItem tipo, String descricao, Distribuidora distribuidora) {
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
+        this.distribuidora = distribuidora;
     }
 
     public Long getId() {
@@ -38,11 +45,11 @@ public abstract class Item implements Serializable {
         this.id = id;
     }
 
-    public String getTipo() {
-        return this.tipo;
+    public TipoItem getTipo() {
+        return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoItem tipo) {
         this.tipo = tipo;
     }
 
@@ -52,6 +59,14 @@ public abstract class Item implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Distribuidora getDistribuidora() {
+        return distribuidora;
+    }
+
+    public void setDistribuidora(Distribuidora distribuidora) {
+        this.distribuidora = distribuidora;
     }
 
     @Override

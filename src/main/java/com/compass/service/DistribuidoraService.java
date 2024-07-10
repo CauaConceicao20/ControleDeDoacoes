@@ -19,4 +19,8 @@ public class DistribuidoraService {
         return distribuidoraDao.buscaTodos();
     }
 
+    public Distribuidora buscaDistribuidoraPorId(long id) {
+       return distribuidoraDao.buscaPorId(id);
+    }
+
 }

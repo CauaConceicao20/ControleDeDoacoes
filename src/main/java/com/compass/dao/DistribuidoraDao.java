@@ -22,7 +22,9 @@ public class DistribuidoraDao {
             }
             e.printStackTrace();
         }finally {
-            close();
+            if(distribuidora == null) {
+                close();
+            }
         }
     }
 
