@@ -47,13 +47,13 @@ public class CsvReader {
             while((linha = leia.readNext()) != null) {
                     filtraDistribuidoras(linha, distribuidoras, items);
             }
-        }catch(IOException | CsvValidationException |ParseException e) {
+        }catch(IOException | CsvValidationException | ParseException | IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
         return items;
     }
 
-    public void filtraDistribuidoras(String[] linha, List<Distribuidora> distribuidoras, List<Item> items) throws ParseException {
+    public void filtraDistribuidoras(String[] linha, List<Distribuidora> distribuidoras, List<Item> items) throws ParseException, IllegalArgumentException {
         switch (linha[0].toUpperCase()) {
             case "ROUPA":
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
@@ -81,7 +81,7 @@ public class CsvReader {
                 }
                 break;
             default :
-                System.out.println("Item não é valido" + linha[0]);
+                throw new IllegalArgumentException("Tipo de Item inexistente" + linha[0]);
         }
     }
 }

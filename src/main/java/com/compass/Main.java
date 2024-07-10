@@ -6,6 +6,7 @@ import com.compass.enums.Genero;
 import com.compass.enums.PedidoStatus;
 import com.compass.enums.TamanhoRoupa;
 import com.compass.enums.TipoItem;
+import com.compass.exception.LimiteAlcancadoException;
 import com.compass.service.AbrigoService;
 import com.compass.service.DistribuidoraService;
 import com.compass.service.ItemService;
@@ -38,7 +39,7 @@ public class Main {
 
 /*
         distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
-        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.listaDistribuidorasCsv()));
+        itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.retornaDistribuidoras()));
 
 
         List<Item> list = itemService.retornaItems();
@@ -71,8 +72,11 @@ public class Main {
   */
 
         Roupa roupa = new Roupa(null, TipoItem.ROUPA, "Camisa", Genero.M, TamanhoRoupa.P, distribuidoraService.buscaDistribuidoraPorId(1));
-
-        itemService.adiciona(roupa);
+        try {
+            itemService.adiciona(roupa);
+        }catch (LimiteAlcancadoException | IllegalArgumentException e) {
+             System.out.println(e.getMessage());
+        }
 
         System.out.println("Hello world!");
 

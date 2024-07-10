@@ -15,12 +15,24 @@ public class DistribuidoraService {
         }
     }
 
-    public List<Distribuidora> listaDistribuidorasCsv() {
+    public void adicionaDistribuidora(Distribuidora distribuidora) {
+        distribuidoraDao.adiciona(distribuidora);
+    }
+
+    public List<Distribuidora> retornaDistribuidoras() {
         return distribuidoraDao.buscaTodos();
     }
 
     public Distribuidora buscaDistribuidoraPorId(long id) {
        return distribuidoraDao.buscaPorId(id);
+    }
+
+    public void alterarDistribuidora(Distribuidora distribuidora) {
+        distribuidoraDao.alterar(distribuidora);
+    }
+
+    public void removeDistribuidroa(Long id) {
+        distribuidoraDao.remove(id);
     }
 
 }

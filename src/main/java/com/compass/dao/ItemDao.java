@@ -1,5 +1,6 @@
 package com.compass.dao;
 
+import com.compass.entities.Distribuidora;
 import com.compass.entities.Item;
 import com.compass.entities.Roupa;
 import jakarta.persistence.*;
@@ -13,34 +14,79 @@ public class ItemDao {
     EntityManager em = emf.createEntityManager();
 
     public void adiciona(Item item) {
-        em.getTransaction().begin();
-        em.persist(item);
-        em.flush();
-        em.getTransaction().commit();
+        try {
+            em.getTransaction().begin();
+            em.persist(item);
+            em.getTransaction().commit();
+        }catch(Exception e) {
+            if(em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Ocorreu um erro ao tentar adicionar o item" + e.getMessage());
+        }finally {
+            if(item == null) {
+                close();
+            }
+        }
     }
 
     public List<Item> buscaTodos() {
-        String hql = "SELECT e FROM Item e";
-        TypedQuery<Item> query = em.createQuery(hql, Item.class);
-        return query.getResultList();
+        try {
+            String hql = "SELECT e FROM Item e";
+            TypedQuery<Item> query = em.createQuery(hql, Item.class);
+            return query.getResultList();
+        }finally {
+            close();
+        }
     }
 
     public Item buscaPorId(Long id) {
-        return em.find(Item.class, id);
+        try {
+            return em.find(Item.class, id);
+        }finally {
+            close();
+        }
     }
 
-    public void alterar(Long id, String descricao) {
-        Item item = buscaPorId(id);
-        item.setDescricao(descricao);
-        adiciona(item);
+    public void alterar(Item item) {
+        try{
+            em.getTransaction().begin();
+            em.merge(item);
+            em.getTransaction().commit();
+        }catch(Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Ocorreu um erro ao tentar alterar dados do item" + e.getMessage());
+        }finally {
+            close();
+        }
     }
 
     public void remove(Long id) {
-        Item item = buscaPorId(id);
-        if(item != null) {
+        try {
             em.getTransaction().begin();
-            em.remove(item);
+            Item item = buscaPorId(id);
+            if (item != null) {
+                em.remove(item);
+            }
             em.getTransaction().commit();
+        }catch(Exception e) {
+            if(em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Ocorreu um erro ao tentar remover o item" + e.getMessage());
+        }finally {
+            close();
+        }
+    }
+
+    public void close() {
+        if (em != null) {
+            em.close();
+        }
+        if (emf != null) {
+            emf.close();
         }
     }
 }

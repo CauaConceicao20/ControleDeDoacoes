@@ -2,6 +2,7 @@ package com.compass.service;
 
 import com.compass.dao.ItemDao;
 import com.compass.entities.*;
+import com.compass.exception.LimiteAlcancadoException;
 
 import java.util.List;
 
@@ -9,14 +10,13 @@ public class ItemService {
 
     ItemDao itemDao = new ItemDao();
 
-    public void adiciona(Item item) {
-        int quantidadeItem = determinaQuantidadeDeitems(item);
-
-        if(quantidadeItem < 1000 && quantidadeItem > 0) {
-            itemDao.adiciona(item);
-        }else {
-            System.out.println("Distribuidora está cheia");
-        }
+    public void adiciona(Item item) throws LimiteAlcancadoException {
+        int quantidadeItem = determinaQuantidadeDeItems(item);
+            if (quantidadeItem < 1000 && quantidadeItem > 0) {
+                itemDao.adiciona(item);
+            }else {
+                throw new LimiteAlcancadoException("Não é possivel doar!! Limite da distribuidora alcançado.");
+            }
     }
 
     public void adicionaItemsCsv(List<Item> items) {
@@ -32,8 +32,8 @@ public class ItemService {
         return itemDao.buscaPorId(id);
     }
 
-    public void alteraItem(Long id, String descricao) {
-        itemDao.alterar(id, descricao);
+    public void alteraItem(Item item) {
+        itemDao.alterar(item);
     }
 
     public void removeItem(Long id){
@@ -73,7 +73,7 @@ public class ItemService {
         return quantidadeDeProdutosHigiene;
     }
 
-    public int determinaQuantidadeDeitems(Item item) {
+    public int determinaQuantidadeDeItems(Item item) {
         int quantidadeItem = 0;
 
         switch (item.getTipo()) {
@@ -87,7 +87,7 @@ public class ItemService {
                 quantidadeItem = retornaQuantidadeDeProdutosDeHigiene(item);
                 break;
             default:
-                System.out.println("Tipo inexistente");
+                throw new IllegalArgumentException("Tipo de item inexistente" + item.getTipo());
         }
         return quantidadeItem;
     }

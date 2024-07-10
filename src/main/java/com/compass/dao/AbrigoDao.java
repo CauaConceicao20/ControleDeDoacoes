@@ -20,7 +20,7 @@ public class AbrigoDao {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar adicionar o abrigo" + e.getMessage());
         } finally {
             close();
         }
@@ -53,7 +53,7 @@ public class AbrigoDao {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar alterar dados do abrigo" + e.getMessage());
         }finally {
             close();
         }
@@ -71,7 +71,7 @@ public class AbrigoDao {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar remover o abrigo" + e.getMessage());
         }
     }
 

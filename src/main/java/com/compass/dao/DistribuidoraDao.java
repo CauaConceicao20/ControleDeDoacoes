@@ -20,7 +20,7 @@ public class DistribuidoraDao {
             if(em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar adicionar a distribuidora" + e.getMessage());
         }finally {
             if(distribuidora == null) {
                 close();
@@ -55,7 +55,7 @@ public class DistribuidoraDao {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar alterar dados da distribuidora" + e.getMessage());
         }finally {
             close();
         }
@@ -73,7 +73,7 @@ public class DistribuidoraDao {
             if(em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar remover a distribuidora" + e.getMessage());
         }finally {
             close();
         }
