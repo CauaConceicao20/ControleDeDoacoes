@@ -1,76 +1,144 @@
 package com.compass;
 
-import com.compass.dao.ItemDao;
-import com.compass.entities.*;
-import com.compass.enums.Genero;
-import com.compass.enums.PedidoStatus;
-import com.compass.enums.TamanhoRoupa;
-import com.compass.enums.TipoItem;
-import com.compass.exception.LimiteAlcancadoException;
-import com.compass.service.AbrigoService;
-import com.compass.service.DistribuidoraService;
-import com.compass.service.ItemService;
-import com.compass.util.CsvReader;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import net.bytebuddy.implementation.bind.annotation.Super;
+import com.compass.util.menu.ValidadorMenu;
+import com.compass.util.menu.Menu;
 
 import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
 public class Main {
     public static void main(String[] args) throws ParseException {
 
-        Scanner teclado = new Scanner(System.in);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+/*
         CsvReader csvReader = new CsvReader();
         DistribuidoraService distribuidoraService = new DistribuidoraService();
         ItemService itemService = new ItemService();
         AbrigoService abrigoService = new AbrigoService();
 
-/*
+
         distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
         itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.retornaDistribuidoras()));
 
 
-        List<Item> list = itemService.retornaItems();
+ */
 
-        for(Item item : list) {
-            if(item.getClass().getSimpleName().equals("Roupa")) {
-                System.out.println("É do tipo roupa: " + item.getClass().getSimpleName());
-            }else {
-                System.out.println("Não é do tipo roupa: " + item.getClass().getSimpleName());
+        Menu menu = new Menu();
+        int opcaoMenu = 0;
+        int opcaoSubMenu = 0;
+
+
+        while (true) {
+            menu.exibirMenuPrincipal();
+            opcaoMenu = menu.lerOpcao(0, 6);
+
+            if (opcaoMenu > 0 && opcaoMenu <= 5) {
+                while (true) {
+                    int subMenu = menu.chamarSubMenu(opcaoMenu, menu);
+                    opcaoSubMenu = menu.lerOpcao(0, 5);
+
+                    if (opcaoSubMenu == 5) {
+                        break;
+                    }
+
+                    switch (subMenu) {
+                        case 1:
+                            switch (opcaoSubMenu) {
+                                case 1:
+                                    System.out.println("Inicia cadastro de item");
+                                    break;
+                                case 2:
+                                    System.out.println("Lista de items");
+                                    break;
+                                case 3:
+                                    System.out.println("Altera item");
+                                    break;
+                                case 4:
+                                    System.out.println("Remove item");
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            switch (opcaoSubMenu) {
+                                case 1:
+                                    System.out.println("Cadastro de distribuidoras");
+                                    break;
+                                case 2:
+                                    System.out.println("Lista de distribuidoras");
+                                    break;
+                                case 3:
+                                    System.out.println("Altera distribuidora");
+                                    break;
+                                case 4:
+                                    System.out.println("Remove distribuidora");
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (opcaoSubMenu) {
+                                case 1:
+                                    System.out.println("Cadastro de abrigos");
+                                    break;
+                                case 2:
+                                    System.out.println("Lista abrigos");
+                                    break;
+                                case 3:
+                                    System.out.println("Altera abrigo");
+                                    break;
+                                case 4:
+                                    System.out.println("Remove abrigo");
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            switch (opcaoSubMenu) {
+                                case 1:
+                                    System.out.println("fazer de Pedido");
+                                    break;
+                                case 2:
+                                    System.out.println("Listar pedidos");
+                                    break;
+                                case 3:
+                                    System.out.println("Altera pedido");
+                                    break;
+                                case 4:
+                                    System.out.println("Remove pedido");
+                                    break;
+                            }
+                            break;
+                        case 5:
+                            switch (opcaoSubMenu) {
+                                case 1:
+                                    System.out.println("Cadastra pessoa");
+                                    break;
+                                case 2:
+                                    System.out.println("Listar pessoas");
+                                    break;
+                                case 3:
+                                    System.out.println("Altera pessoa");
+                                    break;
+                                case 4:
+                                    System.out.println("Remove pessoa");
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            } else if (opcaoMenu == 6) {
+                System.out.println("Programa finalizado");
+                break;
             }
         }
-
-        itemService.removeItem(1L);
-        System.out.println("Item removido");
-
-        Item itemRecebido = itemService.buscaItemPorId(4L);
-        List<Item> items = itemService.retornaItems();
+    }
+}
 
 
-
-        List<Item> items = itemService.retornaItems();
-        for(Item item : items) {
-            System.out.println(item.getTipo());
-        }
-
-        System.out.println(itemRecebido.getDescricao());
-
-        itemService.alteraItem(8L, "Jaqueta");
-
-  */
-
+      /*
         Roupa roupa = new Roupa(null, TipoItem.ROUPA, "Camisa", Genero.M, TamanhoRoupa.P, distribuidoraService.buscaDistribuidoraPorId(1));
         try {
             itemService.adiciona(roupa);
@@ -79,6 +147,4 @@ public class Main {
         }
 
         System.out.println("Hello world!");
-
-    }
-}
+         */
