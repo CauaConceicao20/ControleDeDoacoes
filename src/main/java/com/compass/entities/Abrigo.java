@@ -22,7 +22,7 @@ public class Abrigo implements Serializable {
     private Endereco endereco;
 
     @OneToOne
-    @MapsId
+    @JoinColumn(name = "responsavel_id", nullable = false)
     private Pessoa responsavel;
 
     private String telefone;

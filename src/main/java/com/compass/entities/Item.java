@@ -4,6 +4,8 @@ import com.compass.enums.TipoItem;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +24,10 @@ public abstract class Item implements Serializable {
     private TipoItem tipo;
 
     private String descricao;
+
+    @ManyToMany
+    @JoinTable(name= "tb_pedido_item", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "pedido_id"))
+    private List<Pedido> pedidos = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "distribuidora_id")
@@ -67,6 +73,14 @@ public abstract class Item implements Serializable {
 
     public void setDistribuidora(Distribuidora distribuidora) {
         this.distribuidora = distribuidora;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override

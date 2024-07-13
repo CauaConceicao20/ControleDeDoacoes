@@ -22,6 +22,9 @@ public class Distribuidora implements Serializable {
     @Embedded
     private Endereco endereco;
 
+    @Transient
+    private int quantidade;
+
     @OneToMany(mappedBy = "distribuidora")
     private List<Pedido> pedido;
 
@@ -57,6 +60,14 @@ public class Distribuidora implements Serializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 
     public List<Pedido> getPedido() {

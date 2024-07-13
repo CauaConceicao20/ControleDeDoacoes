@@ -1,5 +1,11 @@
 tipo,descricao,genero,tamanho,quantidade,unidade_de_medida,validade, distribuidora_id
+Alimento,Arroz,10,KG,2024-10-20,2
+Alimento,Arroz,10,KG,2024-10-20,2
+Alimento,Arroz,10,KG,2024-10-20,2
+Alimento,Arroz,10,KG,2024-10-20,3
+Alimento,Arroz,10,KG,2024-10-20,3
 Alimento,Arroz,10,KG,2024-10-20,1
+Alimento,Arroz,10,KG,2024-10-20,2
 Alimento,Feijão,10,KG,2024-11-21,2
 Alimento,Leite,1,L,2024-19-10,3
 Alimento,Frango,1,KG,2025-01-2,1
@@ -7,9 +13,34 @@ Roupa,Agasalho,M,PP,1
 Roupa,Agasalho,F,M,2
 Roupa,Camisa,M,GG,3
 Roupa,Camisa,F,P,1
+Roupa,Agasalho,M,PP,2
+Roupa,Agasalho,M,PP,2
+Roupa,Agasalho,M,PP,3
+Roupa,Agasalho,M,PP,1
+Roupa,Agasalho,M,PP,3
+Roupa,Camisa,F,P,1
+Roupa,Camisa,F,P,2
+Roupa,Camisa,F,P,3
+Roupa,Camisa,F,P,1
+Roupa,Camisa,F,P,2
+Roupa,Agasalho,F,M,1
+Roupa,Agasalho,F,M,2
+Roupa,Agasalho,F,M,1
+Roupa,Agasalho,F,M,3
+Roupa,Agasalho,F,M,1
 Produto_Higiene,Sabonete Liquido,3
 Produto_Higiene,Escova de Dentes,3
 Produto_Higiene,Sabonete,2
 Produto_Higiene,Absorventes,1
 Produto_Higiene,Shampo,2
 Produto_Higiene,Pasta de Dentes,1
+Produto_Higiene,Sabonete Liquido,1
+Produto_Higiene,Sabonete Liquido,1
+Produto_Higiene,Sabonete Liquido,1
+Produto_Higiene,Sabonete Liquido,2
+Produto_Higiene,Sabonete Liquido,2
+Produto_Higiene,Sabonete Liquido,3
+Produto_Higiene,Sabonete Liquido,2
+Produto_Higiene,Sabonete Liquido,1
+Produto_Higiene,Sabonete Liquido,3
+Produto_Higiene,Sabonete Liquido,3

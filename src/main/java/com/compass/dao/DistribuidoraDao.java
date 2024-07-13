@@ -21,29 +21,19 @@ public class DistribuidoraDao {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar adicionar a distribuidora" + e.getMessage());
-        }finally {
-            if(distribuidora == null) {
-                close();
-            }
         }
     }
 
     public List<Distribuidora> buscaTodos() {
-        try {
             String hql = "SELECT e FROM Distribuidora e";
             TypedQuery<Distribuidora> query = em.createQuery(hql, Distribuidora.class);
             return query.getResultList();
-        }finally {
-            close();
-        }
+
     }
 
     public Distribuidora buscaPorId(Long id) {
-        try {
             return em.find(Distribuidora.class, id);
-        }finally {
-            close();
-        }
+
     }
 
     public void alterar(Distribuidora distribuidora) {
@@ -56,8 +46,6 @@ public class DistribuidoraDao {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar alterar dados da distribuidora" + e.getMessage());
-        }finally {
-            close();
         }
     }
 

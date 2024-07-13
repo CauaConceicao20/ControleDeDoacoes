@@ -5,6 +5,7 @@ import com.compass.entities.*;
 import com.compass.enums.Genero;
 import com.compass.enums.TamanhoRoupa;
 import com.compass.enums.TipoItem;
+import com.compass.enums.UnidadeDeMedida;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -75,7 +76,7 @@ public class CsvReader {
             case "ALIMENTO" :
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[5])) {
-                        Alimento alimento = new Alimento(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Integer.parseInt(linha[2]), linha[3], dateFormat.parse(linha[4]), distribuidoraAssociada);
+                        Alimento alimento = new Alimento(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Integer.parseInt(linha[2]), UnidadeDeMedida.valueOf(linha[3]), dateFormat.parse(linha[4]), distribuidoraAssociada);
                         items.add(alimento);
                     }
                 }

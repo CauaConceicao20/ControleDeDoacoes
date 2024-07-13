@@ -2,6 +2,9 @@ package com.compass.service;
 
 import com.compass.dao.ItemDao;
 import com.compass.entities.*;
+import com.compass.enums.Genero;
+import com.compass.enums.TamanhoRoupa;
+import com.compass.enums.UnidadeDeMedida;
 import com.compass.exception.LimiteAlcancadoException;
 
 import java.util.List;
@@ -14,8 +17,10 @@ public class ItemService {
         int quantidadeItem = determinaQuantidadeDeItems(item);
             if (quantidadeItem < 1000 && quantidadeItem > 0) {
                 itemDao.adiciona(item);
+            }else if(quantidadeItem > 1000) {
+                throw new LimiteAlcancadoException("Não é possivel doar!! Limite da distribuidora alcançado");
             }else {
-                throw new LimiteAlcancadoException("Não é possivel doar!! Limite da distribuidora alcançado.");
+                throw new LimiteAlcancadoException("Não é possivel doar!! items vazios");
             }
     }
 
@@ -32,6 +37,18 @@ public class ItemService {
         return itemDao.buscaPorId(id);
     }
 
+    public List<Roupa> buscaPersonalizadaDeRoupas(String descricao, TamanhoRoupa tamanho, Genero genero) {
+       return itemDao.buscaPersonalizadaDeRoupa(descricao, tamanho, genero);
+    }
+
+    public List<ProdutoHigiene> buscaPersonalizadaDeProdutosHigiene(String descricao) {
+        return itemDao.buscaPersonalizadaDeProdutoHigiene(descricao);
+    }
+
+    public List<Alimento> buscaPersonalzadaDeAlimentos(String descricao, UnidadeDeMedida unidadeDeMedida, int quantidade) {
+        return itemDao.buscaPersonalizadaDeAlimentos(descricao, unidadeDeMedida, quantidade);
+    }
+
     public void alteraItem(Item item) {
         itemDao.alterar(item);
     }
@@ -44,7 +61,7 @@ public class ItemService {
         List<Item> list = retornaItems();
         int quantidadeDeRoupas = 0;
         for (Item itemList : list) {
-            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList.getClass().getSimpleName() == "Roupa") {
+            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList instanceof Roupa) {
                 quantidadeDeRoupas++;
             }
         }
@@ -55,7 +72,7 @@ public class ItemService {
         List<Item> list = retornaItems();
         int quantidadeDeAlimentos = 0;
         for (Item itemList : list) {
-            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList.getClass().getSimpleName() == "Alimento") {
+            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList instanceof Alimento) {
                 quantidadeDeAlimentos++ ;
             }
         }
@@ -66,7 +83,7 @@ public class ItemService {
         List<Item> list = retornaItems();
         int quantidadeDeProdutosHigiene = 0;
         for (Item itemList : list) {
-            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList.getClass().getSimpleName() == "ProdutoHigiene") {
+            if (item.getDistribuidora().getId() == itemList.getDistribuidora().getId() && itemList instanceof ProdutoHigiene) {
                 quantidadeDeProdutosHigiene++;
             }
         }
@@ -91,5 +108,4 @@ public class ItemService {
         }
         return quantidadeItem;
     }
-
 }

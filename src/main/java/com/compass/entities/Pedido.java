@@ -28,12 +28,19 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "distribuidora_id")
     private Distribuidora distribuidora;
 
-    @OneToMany(mappedBy = "id.pedidoId")
-    private List<PedidoItem> items = new ArrayList<>();
+    @ManyToMany(mappedBy = "pedidos")
+    private List<Item> items = new ArrayList<>();
 
-    public Pedido(Long id, PedidoStatus pedidoStatus) {
+    public Pedido() {
+
+    }
+
+
+    public Pedido(Long id, PedidoStatus pedidoStatus, Abrigo abrigo ,Distribuidora distribuidora) {
         this.id = id;
         this.pedidoStatus = pedidoStatus;
+        this.abrigo = abrigo;
+        this.distribuidora = distribuidora;
     }
 
     public Long getId() {
@@ -52,9 +59,10 @@ public class Pedido implements Serializable {
         this.pedidoStatus = pedidoStatus;
     }
 
-    public List<PedidoItem> getItems() {
+    public List<Item> getItems() {
         return items;
     }
+
 
     public Abrigo getAbrigo() {
         return abrigo;

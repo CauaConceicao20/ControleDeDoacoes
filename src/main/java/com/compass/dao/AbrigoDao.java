@@ -3,6 +3,7 @@ package com.compass.dao;
 import com.compass.entities.Abrigo;
 import com.compass.entities.Item;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.List;
 
@@ -21,26 +22,22 @@ public class AbrigoDao {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar adicionar o abrigo" + e.getMessage());
-        } finally {
-            close();
         }
     }
 
     public List<Abrigo> buscaTodos() {
-        try {
             String hql = "SELECT e FROM Abrigo e";
             TypedQuery<Abrigo> query = em.createQuery(hql, Abrigo.class);
             return query.getResultList();
-        } finally {
-            close();
-        }
+
     }
 
     public Abrigo buscaPorId(Long id) {
         try {
             return em.find(Abrigo.class, id);
-        }finally {
-            close();
+        }catch (Exception e){
+            System.out.println("Ocorreu um erro ao buscar abrigos" + e.getMessage());
+            return null;
         }
     }
 
@@ -54,8 +51,6 @@ public class AbrigoDao {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar alterar dados do abrigo" + e.getMessage());
-        }finally {
-            close();
         }
     }
 

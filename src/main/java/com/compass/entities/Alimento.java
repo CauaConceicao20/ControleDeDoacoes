@@ -1,6 +1,7 @@
 package com.compass.entities;
 
 import com.compass.enums.TipoItem;
+import com.compass.enums.UnidadeDeMedida;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -15,7 +16,8 @@ public class Alimento extends Item implements Serializable {
 
     private int quantidade;
 
-    private String unidadeDeMedida;
+    @Enumerated(EnumType.STRING)
+    private UnidadeDeMedida unidadeDeMedida;
 
     @Temporal(TemporalType.DATE)
     private Date validade;
@@ -24,7 +26,7 @@ public class Alimento extends Item implements Serializable {
     public Alimento() {
     }
 
-    public Alimento(Long id, TipoItem tipo, String descricao, int quantidade, String unidadeDeMedida, Date validade, Distribuidora distribuidora) {
+    public Alimento(Long id, TipoItem tipo, String descricao, int quantidade, UnidadeDeMedida unidadeDeMedida, Date validade, Distribuidora distribuidora) {
         super(id, tipo, descricao, distribuidora);
         this.quantidade = quantidade;
         this.unidadeDeMedida = unidadeDeMedida;
@@ -39,11 +41,11 @@ public class Alimento extends Item implements Serializable {
         this.quantidade = quantidade;
     }
 
-    public String getUnidadeDeMedida() {
+    public UnidadeDeMedida getUnidadeDeMedida() {
         return unidadeDeMedida;
     }
 
-    public void setUnidadeDeMedida(String unidadeDeMedida) {
+    public void setUnidadeDeMedida(UnidadeDeMedida unidadeDeMedida) {
         this.unidadeDeMedida = unidadeDeMedida;
     }
 
