@@ -25,7 +25,7 @@ public class ItemDao {
             em.persist(item);
             em.getTransaction().commit();
         }catch(Exception e) {
-            if(em.getTransaction().isActive()) {
+            if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar adicionar o item" + e.getMessage());

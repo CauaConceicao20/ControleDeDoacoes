@@ -2,10 +2,7 @@ package com.compass;
 
 import com.compass.dao.PedidoDao;
 import com.compass.entities.*;
-import com.compass.enums.Genero;
-import com.compass.enums.PedidoStatus;
-import com.compass.enums.TamanhoRoupa;
-import com.compass.enums.TipoItem;
+import com.compass.enums.*;
 import com.compass.exception.LimiteAlcancadoException;
 import com.compass.service.*;
 import com.compass.util.CsvReader;
@@ -18,11 +15,13 @@ import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Main {
     public static void main(String[] args) {
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         AbrigoService abrigoService = new AbrigoService();
         ItemService itemService = new ItemService();
@@ -31,6 +30,7 @@ public class Main {
         PedidoService pedidoService = new PedidoService();
         Menu menu = new Menu();
         ValidadorMenu validadorMenu = new ValidadorMenu();
+        Date date = new Date();
 
         Endereco endereco = new Endereco();
         Pessoa responsavel = new Pessoa(null, "Feliphe", "888-999-444.61");
@@ -43,10 +43,8 @@ public class Main {
 
         CsvReader csvReader = new CsvReader();
 
-
         distribuidoraService.adicionaDistribuidorasCsv(csvReader.lerDadosDeDistribuidora());
         itemService.adicionaItemsCsv(csvReader.lerDadosDeItems(distribuidoraService.retornaDistribuidoras()));
-
 
         int opcaoMenu = 0;
         int opcaoSubMenu = 0;
@@ -70,16 +68,186 @@ public class Main {
                         case 1:
                             switch (opcaoSubMenu) {
                                 case 1:
-                                    System.out.println("Inicia cadastro de item");
+                                    Scanner teclado = new Scanner(System.in);
+                                    String descricao = null;
+                                    System.out.println("Qual tipo de item sera doado " + "\n1-Roupa" + "\n2-Produto de Higiene" + "\n3-Alimento");
+                                    int tipoItem = menu.lerOpcaoDeMenu(1, 3);
+
+                                    Distribuidora distribuidora = null;
+                                    switch (tipoItem) {
+
+                                        case 1:
+                                            System.out.println("Qual descrição da roupa:" + "\n1-Agasalho" + "\n2-Camisa" + "\n3-Calca" + "\n4-Bermuda");
+                                            int escolhaDescricao = menu.lerOpcaoDeMenu(1, 4);
+
+                                            descricao = menu.escolhaDeDescricaoRoupa(escolhaDescricao);
+
+                                            if (escolhaDescricao < 1 || escolhaDescricao > 4) {
+                                                break;
+                                            }
+
+                                            Genero genero = menu.escolhaDeGenero();
+
+                                            if (genero == null) {
+                                                break;
+                                            }
+
+                                            TamanhoRoupa tamanhoRoupa = menu.escolhaDeTamanhoRoupa();
+
+                                            if (tamanhoRoupa == null) {
+                                                break;
+                                            }
+
+                                            distribuidora = menu.escolhaDeDistribuidora();
+
+                                            try {
+                                                if (distribuidora != null) {
+                                                    Roupa roupa = new Roupa(null, TipoItem.ROUPA, descricao, genero, tamanhoRoupa, null, distribuidora);
+                                                    itemService.adiciona(roupa);
+                                                    System.out.println("Item doado com sucesso");
+                                                }
+                                            } catch (LimiteAlcancadoException e) {
+                                                System.out.println(e.getMessage());
+                                                break;
+                                            } catch (NullPointerException e) {
+                                                System.out.println("Ocorreu um error");
+                                                break;
+                                            }
+                                            break;
+                                        case 2:
+                                            System.out.println("Qual descrição do Produto de Higiene " + "\n1-Escova" + "\n2-Pasta de Dentes" + "\n3-Sabonete" + "\n4-Sabonete Liquido");
+                                            escolhaDescricao = menu.lerOpcaoDeMenu(1, 4);
+
+                                            descricao = menu.escolhaDescricaoProdutoHigiene(escolhaDescricao);
+                                            distribuidora = menu.escolhaDeDistribuidora();
+
+                                            try {
+                                                if (distribuidora != null) {
+                                                    ProdutoHigiene produtoHigiene = new ProdutoHigiene(null, TipoItem.PRODUTO_HIGIENE, descricao, null, distribuidora);
+                                                    itemService.adiciona(produtoHigiene);
+                                                    System.out.println("Item doado com sucesso");
+                                                }
+                                            } catch (LimiteAlcancadoException e) {
+                                                System.out.println(e.getMessage());
+                                                break;
+                                            } catch (NullPointerException e) {
+                                                System.out.println("Ocorreu um error");
+                                                break;
+                                            }
+                                            break;
+                                        case 3:
+                                            System.out.println("Qual descrição do Alimento " + "\n1-Arroz" + "\n2-Feijão" + "\n3-Frango" + "\n4-Leite");
+                                            escolhaDescricao = menu.lerOpcaoDeMenu(1, 4);
+                                                descricao = menu.escolhaDescricaoAlimentos(escolhaDescricao);
+                                            try {
+                                                System.out.println("informe a quantidade do peso em medida");
+                                                int quanitade = validadorMenu.validaEntrada();
+
+                                                System.out.println("Informe a unidadeDeMedida \n" + "1-(KG)\n" + "2-(L)");
+                                                int escolhaUnidadeDeMedida = validadorMenu.validaEntrada(2);
+
+                                                UnidadeDeMedida unidadeDeMedida = menu.escolhaDaUnidadeDeMedida(escolhaUnidadeDeMedida);
+
+                                                if (unidadeDeMedida == UnidadeDeMedida.KG && escolhaDescricao == 4) {
+                                                    System.out.println("Leite não se mede em KG");
+                                                    break;
+                                                } else if (unidadeDeMedida == UnidadeDeMedida.L && escolhaUnidadeDeMedida != 4) {
+                                                    System.out.println("Alimento solido não se mede em L");
+                                                    break;
+                                                }
+
+                                                System.out.println("Informe a validade do alimento (yyyy-MM-dd)");
+                                                String validadeStr = teclado.nextLine();
+
+                                                String validade = validadorMenu.obterDataValidade(validadeStr);
+
+                                                distribuidora = menu.escolhaDeDistribuidora();
+
+                                                try {
+                                                    if (distribuidora != null) {
+                                                        Alimento alimento = new Alimento(null, TipoItem.ALIMENTO, descricao, quanitade, unidadeDeMedida, dateFormat.parse(validade), null, distribuidora);
+                                                        itemService.adiciona(alimento);
+                                                        System.out.println("Item doado com sucesso");
+                                                    }
+                                                } catch (LimiteAlcancadoException e) {
+                                                    System.out.println(e.getMessage());
+                                                    break;
+                                                } catch (NullPointerException e) {
+                                                    System.out.println("Ocorreu um error");
+                                                    break;
+                                                }
+                                            } catch (InputMismatchException e) {
+                                                System.out.println("Entrada Invalida");
+                                                break;
+                                            } catch (ParseException e) {
+                                                System.out.println(e.getMessage());
+                                                break;
+                                            }
+                                            break;
+                                    }
                                     break;
                                 case 2:
-                                    System.out.println("Lista de items");
+                                    for (Item item : itemService.retornaItems()) {
+                                        if (item instanceof Roupa roupa) {
+                                            System.out.printf("%-5s | %-20s | %-10s | %-10s\n", roupa.getId(), roupa.getDescricao(), roupa.getGenero(), roupa.getTamanho());
+                                        } else if (item instanceof ProdutoHigiene produtoHigiene) {
+                                            System.out.printf("%-5s | %-20s\n", produtoHigiene.getId(), produtoHigiene.getDescricao());
+                                        } else if (item instanceof Alimento alimento) {
+                                            String formattedDate = dateFormat.format(alimento.getValidade());
+                                            System.out.printf("%-5s | %-20s | %-15d | %-20s | %-15s\n", alimento.getId(), alimento.getDescricao(), alimento.getQuantidade(),
+                                                    alimento.getUnidadeDeMedida(), formattedDate);
+                                        }
+                                    }
                                     break;
                                 case 3:
-                                    System.out.println("Altera item");
+                                    teclado = new Scanner(System.in);
+                                    int opcaoCampo = 0;
+                                    System.out.println("Digite id do item que deseja alterar");
+                                    long itemId = validadorMenu.validaEntrada();
+
+                                    Item item = itemService.buscaItemPorId(itemId);
+
+                                    if (item instanceof Roupa roupa) {
+
+                                        System.out.println("Qual campo deseja alterar: \n1-Descrição" + "\n2-Tamanho" + "\n3-Genero");
+                                        opcaoCampo = menu.lerOpcaoDeMenu(1, 3);
+
+                                        menu.alteraCamposRoupa(roupa, opcaoCampo, teclado);
+                                    }
+                                    if (item instanceof ProdutoHigiene produtoHigiene) {
+                                        System.out.println("Insira a nova Descrição");
+                                        descricao = teclado.nextLine();
+                                        produtoHigiene.setDescricao(descricao);
+                                        itemService.alteraItem(produtoHigiene);
+                                        System.out.println("Campo Alterado");
+                                    }
+                                    if (item instanceof Alimento alimento) {
+                                        System.out.println("Qual campo deseja alterar: \n1-Descrição" + "\n2-quantidade" + "\n3-unidade de medida" + "\n4-validade");
+                                        opcaoCampo = menu.lerOpcaoDeMenu(1, 4);
+
+                                        menu.alterCamposAlimento(alimento, opcaoCampo, teclado);
+
+                                        if (opcaoCampo == 4) {
+                                            System.out.println("Informe nova data de validade(yyyy-MM-dd)");
+                                            String validadeStr = teclado.nextLine();
+                                            try {
+                                                validadorMenu.obterDataValidade(validadeStr);
+                                                alimento.setValidade(dateFormat.parse(validadeStr));
+                                                itemService.alteraItem(alimento);
+                                                System.out.println("Campo Alterado");
+                                            } catch (ParseException e) {
+                                                System.out.println(e.getMessage());
+                                                break;
+                                            }
+                                        }
+                                    }
                                     break;
+
                                 case 4:
-                                    System.out.println("Remove item");
+                                    System.out.println("Digite o Id do item que deseja remover");
+                                    itemId = validadorMenu.validaEntrada();
+                                    itemService.removeItem(itemId);
+                                    System.out.println("Item removido");
                                     break;
                             }
                             break;
@@ -106,13 +274,13 @@ public class Main {
                                     }
 
                                     List<Pedido> pedidosFiltrados = new ArrayList<>();
-                                    for(Pedido pedido : pedidos) {
-                                        if(pedido.getDistribuidora().getId() == distrbuidoraId && pedido.getPedidoStatus() == PedidoStatus.EM_ABERTO) {
+                                    for (Pedido pedido : pedidos) {
+                                        if (pedido.getDistribuidora().getId() == distrbuidoraId && pedido.getPedidoStatus() == PedidoStatus.EM_ABERTO) {
                                             pedidosFiltrados.add(pedido);
                                         }
                                     }
 
-                                    if(pedidosFiltrados.isEmpty()) {
+                                    if (pedidosFiltrados.isEmpty()) {
                                         System.out.println("Nenhum pedido está associado ao " + distribuidora.getNome());
                                         break;
                                     }
@@ -137,7 +305,7 @@ public class Main {
                                         }
                                     }
 
-                                    if(itemsDoPedido.isEmpty()) {
+                                    if (itemsDoPedido.isEmpty()) {
                                         System.out.println("O pedido não possui items");
                                         break;
                                     }
@@ -148,7 +316,7 @@ public class Main {
                                     List<Item> items = itemService.buscaTodosItems();
                                     int quantidadeItem = itemService.determinaQuantidadeDeItemsAbrigo(items, itemsDoPedido.get(0), abrigoDoPedido);
                                     System.out.println("LISTA na MAIN");
-                                    for(Item item : items) {
+                                    for (Item item : items) {
                                         if (abrigoDoPedido != null && item.getAbrigo() != null) {
                                             if (item instanceof Roupa && item.getAbrigo().getId().equals(abrigoDoPedido.getId())) {
 
@@ -157,11 +325,11 @@ public class Main {
                                         }
                                     }
 
-                                        if (quantidadeItem >= 5) {
+                                    if (quantidadeItem >= 5) {
                                         System.out.println("Limite do abrigo foi alcancado =" + quantidadeItem);
                                         break;
                                     }
-                                    quantidadeItem =+ itemsDoPedido.size();
+                                    quantidadeItem = +itemsDoPedido.size();
 
                                     System.out.println("Quantidade =" + quantidadeItem);
 
@@ -187,7 +355,7 @@ public class Main {
                                             System.out.println("Pedido Aceito");
                                             break;
                                         case 2:
-                                            if(pedido != null) {
+                                            if (pedido != null) {
                                                 System.out.println("Pedido rejeitado");
                                                 System.out.println("Qual motivo: ");
                                                 teclado.nextLine();
@@ -197,7 +365,7 @@ public class Main {
                                                 pedidoService.alteraPedido(pedido);
                                             }
                                             break;
-                                        default :
+                                        default:
                                             System.out.println("Opção invalida");
                                     }
                                     break;
@@ -218,7 +386,7 @@ public class Main {
                         case 3:
                             switch (opcaoSubMenu) {
                                 case 1:
-                                    System.out.println("Cadastro de abrigos");
+                                    System.out.println("Informe o nome do abrigo:");
                                     break;
                                 case 2:
                                     System.out.println("Lista abrigos");

@@ -12,6 +12,8 @@ import com.compass.service.PedidoService;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.SQLOutput;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -130,7 +132,7 @@ public class Menu {
     public TamanhoRoupa escolhaDeTamanhoRoupa() throws InputMismatchException {
         Scanner teclado = new Scanner(System.in);
         System.out.println("Qual tamanho:\n" + "1-(GG)\n" + "2-(G)\n" + "3-(M)\n" + "4-(P)\n" + "5-(PP)");
-        int tamanho = teclado.nextInt();
+        int tamanho = lerOpcaoDeMenu(1, 5);
 
         TamanhoRoupa tamanhoRoupa = null;
         switch (tamanho) {
@@ -150,16 +152,15 @@ public class Menu {
                 tamanhoRoupa = TamanhoRoupa.PP;
                 break;
             default:
-                System.out.println("Essa opção não existe");
                 break;
         }
         return tamanhoRoupa;
     }
 
-    public Genero escolhaDeGenero() throws InputMismatchException {
+    public Genero escolhaDeGenero() {
         Scanner teclado = new Scanner(System.in);
         System.out.println("Qual genero:\n" + "1-(M)\n" + "2-(F)");
-        int opcaoGenero = teclado.nextInt();
+        int opcaoGenero = lerOpcaoDeMenu(1, 2);
 
         Genero genero = null;
         switch (opcaoGenero) {
@@ -170,10 +171,19 @@ public class Menu {
                 genero = Genero.F;
                 break;
             default:
-                System.out.println("Essa opção não existe");
                 break;
         }
         return genero;
+    }
+
+    public Distribuidora escolhaDeDistribuidora() {
+        Distribuidora distribuidora = null;
+        System.out.println("Escolha qual distribuidora deseja fazer a doação" + "\n1-(Centro de Distribuição Esperança)"
+                + "\n2-(Centro de Distribuição Prosperidade)" + "\n3-(Centro de Distribuição Reconstrução)");
+        long escolhaDistribuidora = lerOpcaoDeMenu(1, 3);
+
+        distribuidora = distribuidoraService.buscaDistribuidoraPorId(escolhaDistribuidora);
+        return distribuidora;
     }
 
     public UnidadeDeMedida escolhaDaUnidadeDeMedida(int escolha) {
@@ -186,9 +196,146 @@ public class Menu {
                 unidadeDeMedida = UnidadeDeMedida.L;
                 break;
             default:
-                System.out.println("Essa opção não existe");
+                break;
         }
         return unidadeDeMedida;
+    }
+
+    public String escolhaDeDescricaoRoupa(int escolhaDescricao) {
+        String descricao = "";
+        switch (escolhaDescricao) {
+            case 1:
+                descricao = "Agasalho";
+                break;
+            case 2:
+                descricao = "Camisa";
+                break;
+            case 3:
+                descricao = "Calca";
+                break;
+            case 4:
+                descricao = "Bermuda";
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+        return descricao;
+    }
+
+    public String escolhaDescricaoProdutoHigiene(int escolhaDescricao) {
+        String descricao = null;
+        switch (escolhaDescricao) {
+            case 1:
+                descricao = "Escova";
+                break;
+            case 2:
+                descricao = "Pasta de Dentes";
+                break;
+            case 3:
+                descricao = "Sabonete";
+                break;
+            case 4:
+                descricao = "Sabonete Liquido";
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+        return descricao;
+    }
+    public String escolhaDescricaoAlimentos(int escolhaDescricao) {
+        String descricao = null;
+        switch (escolhaDescricao) {
+            case 1:
+                descricao = "Arroz";
+                break;
+            case 2:
+                descricao = "Feijão";
+                break;
+            case 3:
+                descricao = "Frango";
+                break;
+            case 4:
+                descricao = "Leite";
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+        return  descricao;
+    }
+
+    public void alteraCamposRoupa(Roupa roupa, int opcaoCampo, Scanner teclado) {
+        switch (opcaoCampo) {
+            case 1:
+                System.out.println("Digite nova descricao:");
+                String descricaoAlterada = teclado.nextLine();
+                roupa.setDescricao(descricaoAlterada);
+                itemService.alteraItem(roupa);
+                System.out.println("Campo Alterado");
+                break;
+            case 2:
+                TamanhoRoupa tamanhoRoupa = escolhaDeTamanhoRoupa();
+                if (tamanhoRoupa == null) {
+                    break;
+                }
+                roupa.setTamanho(tamanhoRoupa);
+                itemService.alteraItem(roupa);
+                System.out.println("Campo Alterado");
+                break;
+            case 3:
+                Genero genero = escolhaDeGenero();
+                if (genero == null) {
+                    break;
+                }
+                roupa.setGenero(genero);
+                itemService.alteraItem(roupa);
+                System.out.println("Campo Alterado");
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+    }
+
+    public void alterCamposAlimento(Alimento alimento, int opcaoCampo, Scanner teclado) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            switch (opcaoCampo) {
+                case 1:
+                    System.out.println("Digite nova descricao:");
+                    String descricao = teclado.nextLine();
+                    alimento.setDescricao(descricao);
+                    itemService.alteraItem(alimento);
+                    System.out.println("Campo Alterado");
+                    break;
+                case 2:
+                    System.out.println("Digita nova quantidade:");
+                    int quantidade = validadorMenu.validaEntrada();
+                    alimento.setQuantidade(quantidade);
+                    itemService.alteraItem(alimento);
+                    System.out.println("Campo Alterado");
+                    break;
+                case 3:
+                    System.out.println("Informe a nova unidadeDeMedida \n" + "1-(KG)\n" + "2-(L)");
+                    int escolhaUnidadeDeMedida = validadorMenu.validaEntrada(2);
+                    if (escolhaUnidadeDeMedida == 2 && alimento.getDescricao() != "Leite") {
+                        System.out.println("Alimento solido não se mede em L");
+                        break;
+                    } else if (escolhaUnidadeDeMedida == 1 && alimento.getDescricao() == "Leite") {
+                        System.out.println("Leite não se mede em KG");
+                        break;
+                    }
+                    UnidadeDeMedida unidadeDeMedida = escolhaDaUnidadeDeMedida(escolhaUnidadeDeMedida);
+                    alimento.setUnidadeDeMedida(unidadeDeMedida);
+                    itemService.alteraItem(alimento);
+                    System.out.println("Campo Alterado");
+                    break;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Digito invalido");
+        }
     }
 
     public void criacaoDePedido(int tipoItem, int quantidade, Abrigo abrigoEncontrado) throws NullPointerException, InputMismatchException {
