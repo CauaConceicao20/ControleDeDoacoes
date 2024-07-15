@@ -26,8 +26,8 @@ public class Alimento extends Item implements Serializable {
     public Alimento() {
     }
 
-    public Alimento(Long id, TipoItem tipo, String descricao, int quantidade, UnidadeDeMedida unidadeDeMedida, Date validade, Distribuidora distribuidora) {
-        super(id, tipo, descricao, distribuidora);
+    public Alimento(Long id, TipoItem tipo, String descricao, int quantidade, UnidadeDeMedida unidadeDeMedida, Date validade, Abrigo abrigo ,Distribuidora distribuidora) {
+        super(id, tipo, descricao, abrigo ,distribuidora);
         this.quantidade = quantidade;
         this.unidadeDeMedida = unidadeDeMedida;
         this.validade = validade;

@@ -22,8 +22,8 @@ public class Roupa extends Item implements Serializable {
 
     }
 
-    public Roupa(Long id, TipoItem tipo, String descricao, Genero genero, TamanhoRoupa tamanho, Distribuidora distribuidora) {
-        super(id, tipo ,descricao, distribuidora);
+    public Roupa(Long id, TipoItem tipo, String descricao, Genero genero, TamanhoRoupa tamanho, Abrigo abrigo, Distribuidora distribuidora) {
+        super(id, tipo ,descricao, abrigo, distribuidora);
         this.genero = genero;
         this.tamanho = tamanho;
     }

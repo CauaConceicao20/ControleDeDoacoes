@@ -25,21 +25,27 @@ public abstract class Item implements Serializable {
 
     private String descricao;
 
-    @ManyToMany
-    @JoinTable(name= "tb_pedido_item", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "pedido_id"))
-    private List<Pedido> pedidos = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "distribuidora_id")
     private Distribuidora distribuidora;
 
+    @ManyToOne
+    @JoinColumn(name = "abrigo_id")
+    private Abrigo abrigo;
+
+    @ManyToMany
+    @JoinTable(name= "tb_pedido_item", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "pedido_id"))
+    private List<Pedido> pedidos = new ArrayList<>();
+
+
     public Item() {
 
     }
-    public Item(Long id, TipoItem tipo, String descricao, Distribuidora distribuidora) {
+    public Item(Long id, TipoItem tipo, String descricao, Abrigo abrigo, Distribuidora distribuidora) {
         this.id = id;
         this.tipo = tipo;
         this.descricao = descricao;
+        this.abrigo = abrigo;
         this.distribuidora = distribuidora;
     }
 
@@ -65,6 +71,14 @@ public abstract class Item implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Abrigo getAbrigo() {
+        return abrigo;
+    }
+
+    public void setAbrigo(Abrigo abrigo) {
+        this.abrigo = abrigo;
     }
 
     public Distribuidora getDistribuidora() {

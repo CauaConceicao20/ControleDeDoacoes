@@ -60,7 +60,7 @@ public class CsvReader {
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[4])) {
                         Roupa roupa = new Roupa(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Genero.valueOf(linha[2].toUpperCase()),
-                                TamanhoRoupa.valueOf(linha[3].toUpperCase()), distribuidoraAssociada);
+                                TamanhoRoupa.valueOf(linha[3].toUpperCase()), null, distribuidoraAssociada);
                         items.add(roupa);
                     }
                 }
@@ -68,7 +68,7 @@ public class CsvReader {
             case "PRODUTO_HIGIENE" :
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[2])) {
-                        ProdutoHigiene produtoHigiene = new ProdutoHigiene(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], distribuidoraAssociada);
+                        ProdutoHigiene produtoHigiene = new ProdutoHigiene(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1],null ,distribuidoraAssociada);
                         items.add(produtoHigiene);
                     }
                 }
@@ -76,7 +76,7 @@ public class CsvReader {
             case "ALIMENTO" :
                 for(Distribuidora distribuidoraAssociada : distribuidoras) {
                     if (distribuidoraAssociada.getId() == Integer.parseInt(linha[5])) {
-                        Alimento alimento = new Alimento(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Integer.parseInt(linha[2]), UnidadeDeMedida.valueOf(linha[3]), dateFormat.parse(linha[4]), distribuidoraAssociada);
+                        Alimento alimento = new Alimento(null, TipoItem.valueOf(linha[0].toUpperCase()), linha[1], Integer.parseInt(linha[2]), UnidadeDeMedida.valueOf(linha[3]), dateFormat.parse(linha[4]), null ,distribuidoraAssociada);
                         items.add(alimento);
                     }
                 }

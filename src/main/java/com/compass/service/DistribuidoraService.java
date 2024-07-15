@@ -11,7 +11,7 @@ public class DistribuidoraService {
     DistribuidoraDao distribuidoraDao = new DistribuidoraDao();
 
     public void adicionaDistribuidorasCsv(List<Distribuidora> distribuidoras) {
-        for(Distribuidora distribuidora : distribuidoras) {
+        for (Distribuidora distribuidora : distribuidoras) {
             distribuidoraDao.adiciona(distribuidora);
         }
     }
@@ -25,7 +25,7 @@ public class DistribuidoraService {
     }
 
     public Distribuidora buscaDistribuidoraPorId(long id) {
-       return distribuidoraDao.buscaPorId(id);
+        return distribuidoraDao.buscaPorId(id);
     }
 
     public void alterarDistribuidora(Distribuidora distribuidora) {
@@ -36,19 +36,25 @@ public class DistribuidoraService {
         distribuidoraDao.remove(id);
     }
 
+
     public List<Distribuidora> adicionaQuantidade(List<Distribuidora> distribuidoras, int quantidadeDistribuidora1, int quantidadeDistribuidora2, int quantidadeDistribuidora3) {
         for (Distribuidora distribuidora : distribuidoras) {
-            if (distribuidora.getId() == 1) {
-                distribuidora.setQuantidade(quantidadeDistribuidora1);
-            }
-            if (distribuidora.getId() == 2) {
-                distribuidora.setQuantidade(quantidadeDistribuidora2);
-            }
-            if (distribuidora.getId() == 3) {
-                distribuidora.setQuantidade(quantidadeDistribuidora3);
+            try {
+                Long distribuidoraId = distribuidora.getId();
+                if (distribuidoraId != null) {
+                    if (distribuidoraId == 1) {
+                        distribuidora.setQuantidade(quantidadeDistribuidora1);
+                    } else if (distribuidoraId == 2) {
+                        distribuidora.setQuantidade(quantidadeDistribuidora2);
+                    } else if (distribuidoraId == 3) {
+                        distribuidora.setQuantidade(quantidadeDistribuidora3);
+                    }
+                }
+            } catch (NullPointerException e) {
+
+            } catch (Exception e) {
             }
         }
-
         return distribuidoras;
     }
 

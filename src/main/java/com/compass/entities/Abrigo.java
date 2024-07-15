@@ -3,6 +3,7 @@ package com.compass.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -32,6 +33,9 @@ public class Abrigo implements Serializable {
     private int capacidade;
 
     private double porcentagemOcupacao;
+
+    @OneToMany(mappedBy = "abrigo")
+    private List<Item> items = new ArrayList<>();
 
     @OneToMany(mappedBy = "abrigo")
     private List<Pedido> pedidos;
@@ -120,6 +124,22 @@ public class Abrigo implements Serializable {
 
     public void setOcupacao(double ocupacao) {
         this.porcentagemOcupacao = ocupacao;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
     }
 
     @Override

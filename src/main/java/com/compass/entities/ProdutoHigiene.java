@@ -15,8 +15,8 @@ public class ProdutoHigiene extends Item implements Serializable {
 
     }
 
-    public ProdutoHigiene(Long id, TipoItem tipo, String descricao, Distribuidora distribuidora) {
-        super(id, tipo, descricao, distribuidora);
+    public ProdutoHigiene(Long id, TipoItem tipo, String descricao, Abrigo abrigo, Distribuidora distribuidora) {
+        super(id, tipo, descricao, abrigo, distribuidora);
     }
 
 

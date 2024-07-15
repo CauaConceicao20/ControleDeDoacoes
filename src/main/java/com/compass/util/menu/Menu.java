@@ -48,12 +48,12 @@ public class Menu {
 
     public void exibirMenuDistribuidora() {
         System.out.println("<-----Distribuidora----->");
-
-        System.out.println("1- Cadastrar Distribuidora");
-        System.out.println("2- Listar Distribuidora");
-        System.out.println("3- Alterar Distribuidora");
-        System.out.println("4- Remover Distribuidora");
-        System.out.println("5- Voltar ao Menu");
+        System.out.println("1- Aceitar Pedidos");
+        System.out.println("2- Cadastrar Distribuidora");
+        System.out.println("3- Listar Distribuidora");
+        System.out.println("4- Alterar Distribuidora");
+        System.out.println("5- Remover Distribuidora");
+        System.out.println("6- Voltar ao Menu");
     }
 
     public void exibirMenuAbrigo() {
@@ -104,22 +104,22 @@ public class Menu {
         return opcao;
     }
 
-    public int chamarSubMenu(int opcao, Menu menu) {
+    public int chamarSubMenu(int opcao) {
         switch (opcao) {
             case 1:
-                menu.exibirMenuItem();
+                exibirMenuItem();
                 break;
             case 2:
-                menu.exibirMenuDistribuidora();
+                exibirMenuDistribuidora();
                 break;
             case 3:
-                menu.exibirMenuAbrigo();
+                exibirMenuAbrigo();
                 break;
             case 4:
-                menu.exibirMenuPedido();
+                exibirMenuPedido();
                 break;
             case 5:
-                menu.exibirMenuPessoa();
+                exibirMenuPessoa();
                 break;
             default:
                 break;
@@ -192,7 +192,7 @@ public class Menu {
     }
 
     public void criacaoDePedido(int tipoItem, int quantidade, Abrigo abrigoEncontrado) throws NullPointerException, InputMismatchException {
-        Scanner teclado= new Scanner(System.in);
+        Scanner teclado = new Scanner(System.in);
         switch (tipoItem) {
             case 1:
                 criacaoDePedidoRoupa(teclado, quantidade, abrigoEncontrado);
@@ -238,17 +238,23 @@ public class Menu {
             List<Roupa> roupasEncontradas = itemService.buscaPersonalizadaDeRoupas(descricao, tamanhoRoupa, genero);
 
             if (roupasEncontradas != null && !roupasEncontradas.isEmpty()) {
-                for (Item roupas : roupasEncontradas) {
-                    if (roupas.getDistribuidora().getId() == 1) {
-                        quantidadeDistribuidora1++;
+                for (Item roupa : roupasEncontradas) {
 
-                    } else if (roupas.getDistribuidora().getId() == 2) {
-                        quantidadeDistribuidora2++;
-                    } else if (roupas.getDistribuidora().getId() == 3) {
-                        quantidadeDistribuidora3++;
+                    Distribuidora distribuidora = roupa.getDistribuidora();
+                    if (distribuidora != null) {
+                        Long distribuidoraId = distribuidora.getId();
+
+                        if (distribuidoraId != null) {
+                            if (distribuidoraId == 1L && roupa.getAbrigo() == null) {
+                                quantidadeDistribuidora1++;
+                            } else if (distribuidoraId == 2L && roupa.getAbrigo() == null) {
+                                quantidadeDistribuidora2++;
+                            } else if (distribuidoraId == 3L && roupa.getAbrigo() == null) {
+                                quantidadeDistribuidora3++;
+                            }
+                        }
                     }
                 }
-
                 distribuidoras = distribuidoraService.adicionaQuantidade(distribuidoras, quantidadeDistribuidora1, quantidadeDistribuidora2, quantidadeDistribuidora3);
 
                 distribuidoraService.organizaDistribuidoraPorQuantidade(distribuidoras, quantidadeSolicitada);
@@ -270,21 +276,27 @@ public class Menu {
                 }
 
                 System.out.println("");
-                System.out.println("Deseja fazer o pedido ?\n" + "1-(aceitar)\n" + "0-(rejeitar)");
-                int opcao = teclado.nextInt();
-                teclado.nextLine();
+                System.out.println("Deseja fazer o pedido ?\n" + "1-(aceitar)\n" + "2-(rejeitar)");
+                int opcao = validadorMenu.validaEntrada();
 
                 if (opcao == 1) {
                     Pedido pedido = new Pedido(null, PedidoStatus.EM_ABERTO, abrigoEncontrado, distribuidoras.get(0));
                     pedidoService.adicionaPedido(pedido);
                     System.out.println("Pedido enviado");
 
-                    for (Roupa roupas : roupasEncontradas) {
-                        roupas.getPedidos().add(pedido);
-                        itemService.alteraItem(roupas);
+                    int numeroDeRoupas = 0;
+                    for (Roupa roupa : roupasEncontradas) {
+                        if (numeroDeRoupas >= quantidadeSolicitada) {
+                            break;
+                        }
+                        if (roupa.getDistribuidora().getId().equals(distribuidoras.get(0).getId())) {
+                            roupa.getPedidos().add(pedido);
+                            itemService.alteraItem(roupa);
+                            numeroDeRoupas++;
+                        }
                     }
                     break;
-                } else {
+                } else if (opcao == 2) {
                     System.out.println("Pedido cancelado");
                     break;
                 }
@@ -316,13 +328,14 @@ public class Menu {
 
             if (produtoHigienesEncontrados != null && !produtoHigienesEncontrados.isEmpty()) {
                 for (Item produtosHigiene : produtoHigienesEncontrados) {
-                    if (produtosHigiene.getDistribuidora().getId() == 1) {
-                        quantidadeDistribuidora1++;
-
-                    } else if (produtosHigiene.getDistribuidora().getId() == 2) {
-                        quantidadeDistribuidora2++;
-                    } else if (produtosHigiene.getDistribuidora().getId() == 3) {
-                        quantidadeDistribuidora3++;
+                    if (produtosHigiene.getDistribuidora().getId() != null) {
+                        if (produtosHigiene.getDistribuidora().getId() == 1) {
+                            quantidadeDistribuidora1++;
+                        } else if (produtosHigiene.getDistribuidora().getId() == 2) {
+                            quantidadeDistribuidora2++;
+                        } else if (produtosHigiene.getDistribuidora().getId() == 3) {
+                            quantidadeDistribuidora3++;
+                        }
                     }
                 }
 
@@ -338,11 +351,9 @@ public class Menu {
                         i++;
                     }
                 }
-
                 if (i >= 3) {
                     System.out.println("");
-                    System.out.println("Nenhuma distribuidora possui a quantidade solicitada\n"
-                            + "emissão de pedido cancelada");
+                    System.out.println("Nenhuma distribuidora possui a quantidade solicitada\n" + "emissão de pedido cancelada");
                     break;
                 }
 
@@ -356,9 +367,16 @@ public class Menu {
                     pedidoService.adicionaPedido(pedido);
                     System.out.println("Pedido enviado");
 
+                    int numeroDeProdutoHigiene = 0;
                     for (ProdutoHigiene produtoHigiene : produtoHigienesEncontrados) {
-                        produtoHigiene.getPedidos().add(pedido);
-                        itemService.alteraItem(produtoHigiene);
+                        if (numeroDeProdutoHigiene >= quantidadeSolicitada) {
+                            break;
+                        }
+                        if (produtoHigiene.getDistribuidora().getId().equals(distribuidoras.get(0).getId())) {
+                            produtoHigiene.getPedidos().add(pedido);
+                            itemService.alteraItem(produtoHigiene);
+                            numeroDeProdutoHigiene++;
+                        }
                     }
                     break;
                 } else {
@@ -383,7 +401,7 @@ public class Menu {
             System.out.println("Informe a Quantidade da unidade de medida");
             int quantidadeAlimento = validadorMenu.validaEntrada();
 
-            if(quantidadeAlimento <= 0) {
+            if (quantidadeAlimento <= 0) {
                 break;
             }
 
@@ -408,13 +426,15 @@ public class Menu {
 
             if (alimentosEncontrados != null && !alimentosEncontrados.isEmpty()) {
                 for (Item produtosHigiene : alimentosEncontrados) {
-                    if (produtosHigiene.getDistribuidora().getId() == 1) {
-                        quantidadeDistribuidora1++;
-
-                    } else if (produtosHigiene.getDistribuidora().getId() == 2) {
-                        quantidadeDistribuidora2++;
-                    } else if (produtosHigiene.getDistribuidora().getId() == 3) {
-                        quantidadeDistribuidora3++;
+                    Long distribuidoraId = produtosHigiene.getDistribuidora().getId();
+                    if (distribuidoraId != null) {
+                        if (distribuidoraId.equals(1L)) {
+                            quantidadeDistribuidora1++;
+                        } else if (distribuidoraId.equals(2L)) {
+                            quantidadeDistribuidora2++;
+                        } else if (distribuidoraId.equals(3L)) {
+                            quantidadeDistribuidora3++;
+                        }
                     }
                 }
 
@@ -448,9 +468,16 @@ public class Menu {
                     pedidoService.adicionaPedido(pedido);
                     System.out.println("Pedido enviado");
 
+                    int numeroDeAlimento = 0;
                     for (Alimento alimento : alimentosEncontrados) {
-                        alimento.getPedidos().add(pedido);
-                        itemService.alteraItem(alimento);
+                        if (numeroDeAlimento >= quantidadeSolicitada) {
+                            break;
+                        }
+                        if (alimento.getDistribuidora().getId().equals(distribuidoras.get(0).getId())) {
+                            alimento.getPedidos().add(pedido);
+                            itemService.alteraItem(alimento);
+                            numeroDeAlimento++;
+                        }
                     }
                     break;
                 } else {

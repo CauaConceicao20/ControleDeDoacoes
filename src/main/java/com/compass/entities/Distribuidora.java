@@ -26,6 +26,9 @@ public class Distribuidora implements Serializable {
     private int quantidade;
 
     @OneToMany(mappedBy = "distribuidora")
+    private List<Item> items = new ArrayList<>();
+
+    @OneToMany(mappedBy = "distribuidora")
     private List<Pedido> pedido;
 
     public Distribuidora() {
@@ -68,6 +71,10 @@ public class Distribuidora implements Serializable {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public List<Item> getItems() {
+        return items;
     }
 
     public List<Pedido> getPedido() {

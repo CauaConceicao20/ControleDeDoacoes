@@ -20,6 +20,8 @@ public class Pedido implements Serializable {
     @Enumerated(EnumType.STRING)
     private PedidoStatus pedidoStatus;
 
+    private String mensagem;
+
     @ManyToOne
     @JoinColumn(name = "abrigo_id")
     private Abrigo abrigo;
@@ -57,6 +59,14 @@ public class Pedido implements Serializable {
 
     public void setPedidoStatus(PedidoStatus pedidoStatus) {
         this.pedidoStatus = pedidoStatus;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 
     public List<Item> getItems() {

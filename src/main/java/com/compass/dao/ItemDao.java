@@ -78,7 +78,7 @@ public class ItemDao {
 
         try {
             em.getTransaction().begin();
-            String hql = "FROM Roupa  WHERE descricao = :descricao AND tamanho = :tamanho AND genero = :genero";
+            String hql = "FROM Roupa WHERE descricao = :descricao AND tamanho = :tamanho AND genero = :genero AND abrigo IS NULL";
             TypedQuery<Roupa> query = em.createQuery(hql, Roupa.class);
             query.setParameter("descricao", descricao);
             query.setParameter("tamanho", tamanho);
@@ -131,47 +131,6 @@ public class ItemDao {
             e.printStackTrace();
         }
         return alimentos;
-    }
-
-    public List<Roupa> buscaPersonalizadaDeAlimento(String descricao, int quantidade, UnidadeDeMedida unidadeDeMedida) {
-        List<Roupa> roupas = null;
-
-        try {
-            em.getTransaction().begin();
-            String hql = "FROM Roupa  WHERE descricao = :descricao AND quantidade = :quantidade AND unidadeDeMedida = :unidadeDeMedida";
-            TypedQuery<Roupa> query = em.createQuery(hql, Roupa.class);
-            query.setParameter("descricao", descricao);
-            query.setParameter("quantidade", quantidade);
-            query.setParameter("unidadeDeMedida", unidadeDeMedida);
-            roupas = query.getResultList();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        }
-
-        return roupas;
-    }
-
-    public List<ProdutoHigiene> buscaPersonalizadaDeRoupa(String descricao) {
-        List<ProdutoHigiene> ProdutosHigiene = null;
-        try {
-            em.getTransaction().begin();
-            String hql = "FROM Roupa  WHERE descricao = :descricao";
-            TypedQuery<ProdutoHigiene> query = em.createQuery(hql, ProdutoHigiene.class);
-            query.setParameter("descricao", descricao);
-            ProdutosHigiene = query.getResultList();
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        }
-
-        return ProdutosHigiene;
     }
 
     public void close() {
