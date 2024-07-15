@@ -34,8 +34,7 @@ public class Menu {
         System.out.println("2- Operações Distribuidoras");
         System.out.println("3- Operações Abrigo");
         System.out.println("4- Operações Pedido");
-        System.out.println("5- Operações Pessoa");
-        System.out.println("6- Finalizar Programa");
+        System.out.println("5- Finalizar Programa");
     }
 
     public void exibirMenuItem() {
@@ -129,6 +128,56 @@ public class Menu {
         return opcao;
     }
 
+    public Endereco cadastraEndereco(Scanner teclado) {
+        int i = 0;
+        Endereco endereco = null;
+        while (i != 1) {
+            System.out.println("Endereço:");
+            System.out.println("Informe o Cep: ");
+            String cep = teclado.nextLine();
+
+            if (!validadorMenu.validaCep(cep)) {
+                System.out.println("Cep inválido");
+                break;
+            }
+
+            System.out.println("Informe Bairro:");
+            String bairro = teclado.nextLine();
+            if (bairro.isEmpty()) {
+                System.out.println("Bairro não pode estar vazio");
+                break;
+            }
+
+            System.out.println("Informe Cidade:");
+            String cidade = teclado.nextLine();
+            if (cidade.isEmpty()) {
+                System.out.println("Cidade não pode estar vazia");
+                break;
+            }
+
+            System.out.println("Informe Estado:");
+            String estado = teclado.nextLine();
+            if (!validadorMenu.validaEstado(estado, 2)) {
+                System.out.println("Estado inválido");
+                break;
+            }
+
+            System.out.println("Informe número:");
+            int numero = validadorMenu.validaEntrada();
+
+            System.out.println("Informe o logradouro:");
+            String logradouro = teclado.nextLine();
+            if (logradouro.isEmpty()) {
+                System.out.println("Logradouro não pode estar vazio");
+                break;
+            }
+
+            endereco = new Endereco(logradouro, numero, bairro, cidade, estado, cep);
+            i++;
+        }
+        return endereco;
+    }
+
     public TamanhoRoupa escolhaDeTamanhoRoupa() throws InputMismatchException {
         Scanner teclado = new Scanner(System.in);
         System.out.println("Qual tamanho:\n" + "1-(GG)\n" + "2-(G)\n" + "3-(M)\n" + "4-(P)\n" + "5-(PP)");
@@ -156,6 +205,217 @@ public class Menu {
         }
         return tamanhoRoupa;
     }
+
+    public void alteraDistribuidora(int opcaoCampo, Distribuidora distribuidoraEncontrada, Scanner teclado) {
+        switch (opcaoCampo) {
+            case 1:
+                System.out.println("Digite novo nome do abrigo");
+                String nomeDistribuidora = teclado.nextLine();
+                if (nomeDistribuidora.trim().isEmpty()) {
+                    System.out.println("Nome do abrigo não pode ser vazio");
+                    break;
+                }
+                distribuidoraEncontrada.setNome(nomeDistribuidora);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 2:
+                System.out.println("Digite novo bairro:");
+                String bairro = teclado.nextLine();
+                if (bairro.isEmpty()) {
+                    System.out.println("Bairro não pode estar vazio");
+                    break;
+                }
+                distribuidoraEncontrada.getEndereco().setBairro(bairro);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 3:
+                System.out.println("Digite novo cep");
+                String cep = teclado.nextLine();
+
+                if (!validadorMenu.validaCep(cep)) {
+                    System.out.println("Cep inválido");
+                    break;
+                }
+                distribuidoraEncontrada.getEndereco().setCep(cep);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 4:
+                System.out.println("Digite novo estado:");
+                String estado = teclado.nextLine();
+                if (!validadorMenu.validaEstado(estado, 2)) {
+                    System.out.println("Estado inválido");
+                    break;
+                }
+                distribuidoraEncontrada.getEndereco().setEstado(estado);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 5:
+                System.out.println("Digite nova Cidade:");
+                String cidade = teclado.nextLine();
+                if (cidade.isEmpty()) {
+                    System.out.println("Cidade não pode estar vazia");
+                    break;
+                }
+                distribuidoraEncontrada.getEndereco().setCidade(cidade);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 6:
+                int numero = 0;
+                System.out.println("Digite novo numero:");
+                try {
+                    numero = validadorMenu.validaEntrada();
+                } catch (InputMismatchException e) {
+                    System.out.println("Digito invalido");
+                }
+                distribuidoraEncontrada.getEndereco().setNumero(numero);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            case 7:
+                System.out.println("Digite novo Logradouro:");
+                String logradouro = teclado.nextLine();
+                if (logradouro.isEmpty()) {
+                    System.out.println("Logradouro não pode estar vazio");
+                    break;
+                }
+                distribuidoraEncontrada.getEndereco().setLogradouro(logradouro);
+                distribuidoraService.alterarDistribuidora(distribuidoraEncontrada);
+                System.out.println("Campo Alterado");
+                break;
+            default:
+                System.out.println("Opção invalida");
+                break;
+        }
+    }
+
+
+    public void alteraAbrigo(int opcaoCampo, Abrigo abrigo, Scanner teclado) {
+        String regexLetras = "^[a-zA-Z]{4,}$";
+        switch (opcaoCampo) {
+            case 1:
+                System.out.println("Digite novo nome do abrigo");
+                String nome = teclado.nextLine();
+                if (!nome.matches(regexLetras)) {
+                    System.out.println("Nome do abrigo deve ter apenas letras e no mínimo 4 caracteres");
+                    break;
+                }
+                abrigo.setNome(nome);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 2:
+                System.out.println("Digite novo nome do Responsavel");
+                String responsavel = teclado.nextLine();
+                if (!responsavel.matches(regexLetras)) {
+                    System.out.println("Nome do responsável deve ter apenas letras e no mínimo 4 caracteres");
+                    break;
+                }
+                abrigo.setResponsavel(responsavel);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 3:
+                System.out.println("Digite novo telefone:");
+                String telefone = teclado.nextLine();
+
+                if (!validadorMenu.validaTelefone(telefone)) {
+                    System.out.println("Telefone Inválido");
+                    break;
+                }
+                abrigo.setTelefone(telefone);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 4:
+                System.out.println("Digite novo email:");
+                String email = teclado.nextLine();
+
+                if (!validadorMenu.validaEmail(email)) {
+                    System.out.println("Email invalido");
+                    break;
+                }
+                abrigo.setEmail(email);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 5:
+                System.out.println("Digite novo bairro:");
+                String bairro = teclado.nextLine();
+                if (!bairro.matches(regexLetras)) {
+                    System.out.println("Bairro deve ter apenas letras e no mínimo 4 caracteres");
+                    break;
+                }
+                abrigo.getEndereco().setBairro(bairro);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 6:
+                System.out.println("Digite novo cep");
+                String cep = teclado.nextLine();
+
+                if (!validadorMenu.validaCep(cep)) {
+                    System.out.println("Cep inválido");
+                    break;
+                }
+                abrigo.getEndereco().setCep(cep);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 7:
+                System.out.println("Digite novo estado:");
+                String estado = teclado.nextLine();
+                if (!validadorMenu.validaEstado(estado, 2)) {
+                    System.out.println("Estado inválido");
+                    break;
+                }
+                abrigo.getEndereco().setEstado(estado);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 8:
+                System.out.println("Digite nova Cidade:");
+                String cidade = teclado.nextLine();
+                if (!cidade.matches(regexLetras)) {
+                    System.out.println("Cidade deve ter apenas letras e no mínimo 4 caracteres");
+                    break;
+                }
+                abrigo.getEndereco().setCidade(cidade);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 9:
+                int numero = 0;
+                System.out.println("Digite novo numero:");
+                try {
+                    numero = validadorMenu.validaEntrada();
+                } catch (InputMismatchException e) {
+                    System.out.println("Digito invalido");
+                }
+                abrigo.getEndereco().setNumero(numero);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            case 10:
+                System.out.println("Digite novo Logradouro:");
+                String logradouro = teclado.nextLine();
+                if (!logradouro.matches(regexLetras)) {
+                    System.out.println("Logradouro deve ter apenas letras e no mínimo 4 caracteres");
+                    break;
+                }
+                abrigo.getEndereco().setLogradouro(logradouro);
+                abrigoService.alterarAbrigo(abrigo);
+                System.out.println("Campo Alterado");
+                break;
+            default:
+                break;
+        }
+    }
+
 
     public Genero escolhaDeGenero() {
         Scanner teclado = new Scanner(System.in);
@@ -244,6 +504,7 @@ public class Menu {
         }
         return descricao;
     }
+
     public String escolhaDescricaoAlimentos(int escolhaDescricao) {
         String descricao = null;
         switch (escolhaDescricao) {
@@ -263,7 +524,7 @@ public class Menu {
                 System.out.println("Opção invalida");
                 break;
         }
-        return  descricao;
+        return descricao;
     }
 
     public void alteraCamposRoupa(Roupa roupa, int opcaoCampo, Scanner teclado) {
@@ -299,7 +560,7 @@ public class Menu {
         }
     }
 
-    public void alterCamposAlimento(Alimento alimento, int opcaoCampo, Scanner teclado) {
+    public void alteraCamposAlimento(Alimento alimento, int opcaoCampo, Scanner teclado) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             switch (opcaoCampo) {
@@ -313,6 +574,9 @@ public class Menu {
                 case 2:
                     System.out.println("Digita nova quantidade:");
                     int quantidade = validadorMenu.validaEntrada();
+                    if(quantidade <- 0) {
+                        break;
+                    }
                     alimento.setQuantidade(quantidade);
                     itemService.alteraItem(alimento);
                     System.out.println("Campo Alterado");
@@ -320,6 +584,9 @@ public class Menu {
                 case 3:
                     System.out.println("Informe a nova unidadeDeMedida \n" + "1-(KG)\n" + "2-(L)");
                     int escolhaUnidadeDeMedida = validadorMenu.validaEntrada(2);
+                    if(escolhaUnidadeDeMedida <= 0) {
+                        break;
+                    }
                     if (escolhaUnidadeDeMedida == 2 && alimento.getDescricao() != "Leite") {
                         System.out.println("Alimento solido não se mede em L");
                         break;
@@ -354,6 +621,7 @@ public class Menu {
                 System.out.println("Essa Opção não existe");
         }
     }
+
 
     public void criacaoDePedidoRoupa(Scanner teclado, int quantidade, Abrigo abrigoEncontrado) {
         int quantidadeDistribuidora1 = 0;

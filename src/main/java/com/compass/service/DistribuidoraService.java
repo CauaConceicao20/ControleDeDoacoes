@@ -37,6 +37,7 @@ public class DistribuidoraService {
     }
 
 
+
     public List<Distribuidora> adicionaQuantidade(List<Distribuidora> distribuidoras, int quantidadeDistribuidora1, int quantidadeDistribuidora2, int quantidadeDistribuidora3) {
         for (Distribuidora distribuidora : distribuidoras) {
             try {

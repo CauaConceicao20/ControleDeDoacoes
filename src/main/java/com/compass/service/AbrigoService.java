@@ -4,6 +4,8 @@ import com.compass.dao.AbrigoDao;
 import com.compass.entities.Abrigo;
 import com.compass.entities.Item;
 
+import java.util.List;
+
 public class AbrigoService {
 
     AbrigoDao abrigoDao = new AbrigoDao();
@@ -12,7 +14,10 @@ public class AbrigoService {
         abrigoDao.addAbrigoBd(abrigo);
     }
 
-    //switch case vai ser feito na main pra alterar abrigo
+    public List<Abrigo> buscaTodosAbrigos() {
+        return abrigoDao.buscaTodos();
+    }
+
     public void alterarAbrigo(Abrigo abrigo) {
         abrigoDao.altera(abrigo);
     }

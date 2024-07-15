@@ -24,4 +24,8 @@ public class PedidoService {
     public void alteraPedido(Pedido pedido) {
         pedidoDao.alterar(pedido);
     }
+
+    public void removePedido(Long id) {
+        pedidoDao.remove(id);
+    }
 }

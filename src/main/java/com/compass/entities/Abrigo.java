@@ -22,9 +22,7 @@ public class Abrigo implements Serializable {
     @Embedded
     private Endereco endereco;
 
-    @OneToOne
-    @JoinColumn(name = "responsavel_id", nullable = false)
-    private Pessoa responsavel;
+    private String  responsavel;
 
     private String telefone;
 
@@ -44,7 +42,7 @@ public class Abrigo implements Serializable {
 
     }
 
-    public Abrigo(Long id, String nome, Endereco endereco, Pessoa responsavel, String telefone, String email, int capacidade) {
+    public Abrigo(Long id, String nome, Endereco endereco, String responsavel, String telefone, String email, int capacidade) {
         this.id = id;
         this.nome = nome;
         this.endereco = endereco;
@@ -86,12 +84,12 @@ public class Abrigo implements Serializable {
         this.endereco = endereco;
     }
 
-    public Pessoa getResponsavel() {
-        return responsavel;
+    public void setResponsavel(String responsavel) {
+        this.responsavel = responsavel;
     }
 
-    public void setResponsavel(Pessoa responsavel) {
-        this.responsavel = responsavel;
+    public String getResponsavel() {
+        return responsavel;
     }
 
     public String getTelefone() {

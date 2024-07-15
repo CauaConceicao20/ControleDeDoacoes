@@ -39,22 +39,39 @@ public class ValidadorMenu {
     public String obterDataValidade(String validadeStr) throws ParseException {
         Pattern pattern = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 
-        // Verifica se a data corresponde ao padrão regex
         Matcher matcher = pattern.matcher(validadeStr);
         if (!matcher.matches()) {
             throw new ParseException("Formato de data inválido. Use yyyy-MM-dd.", 0);
         }
 
-        // Verifica se a data não é uma data passada
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setLenient(false); // Impede datas inválidas de serem aceitas
+        sdf.setLenient(false);
         Date inputDate = sdf.parse(validadeStr);
-        Date currentDate = new Date(); // Obtém a data atual
+        Date currentDate = new Date();
         if (inputDate.before(currentDate)) {
             throw new ParseException("Data não pode ser uma data passada.", 0);
         }
-        // Se passou por todas as validações, a data é considerada válida
+
         return validadeStr;
+    }
+
+    public boolean validaEmail(String email) {
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return Pattern.compile(regex).matcher(email).matches();
+    }
+
+    public boolean validaTelefone(String telefone) {
+        String regex = "^\\(?(\\d{2})\\)?[- ]?(\\d{4,5})[- ]?(\\d{4})$";
+        return Pattern.compile(regex).matcher(telefone).matches();
+    }
+
+    public boolean validaCep(String cep) {
+        String regex = "^\\d{5}-?\\d{3}$";
+        return cep.matches(regex);
+    }
+
+    public boolean validaEstado(String texto, int tamanhoMinimo) {
+        return texto.length() > tamanhoMinimo;
     }
 
 }

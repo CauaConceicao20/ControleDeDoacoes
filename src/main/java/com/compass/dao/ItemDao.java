@@ -128,7 +128,7 @@ public class ItemDao {
             if(em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            e.printStackTrace();
+            System.out.println("Ocorreu um erro ao tentar remover o item" + e.getMessage());
         }
         return alimentos;
     }

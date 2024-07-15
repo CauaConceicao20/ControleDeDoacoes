@@ -62,8 +62,6 @@ public class DistribuidoraDao {
                 em.getTransaction().rollback();
             }
             System.out.println("Ocorreu um erro ao tentar remover a distribuidora" + e.getMessage());
-        }finally {
-            close();
         }
     }
 

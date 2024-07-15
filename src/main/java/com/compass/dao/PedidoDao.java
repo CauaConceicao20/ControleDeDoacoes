@@ -1,5 +1,6 @@
 package com.compass.dao;
 
+import com.compass.entities.Item;
 import com.compass.entities.Pedido;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -30,9 +31,33 @@ public class PedidoDao {
     }
 
     public void alterar(Pedido pedido) {
+        try{
         em.getTransaction().begin();
         em.merge(pedido);
         em.getTransaction().commit();
+        }catch(Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Ocorreu um erro ao tentar alterar dados do Pedido" + e.getMessage());
+        }
     }
 
- }
+    public void remove(Long id) {
+        try {
+            em.getTransaction().begin();
+            Pedido pedido = buscaPorId(id);
+            if (pedido != null) {
+                em.remove(pedido);
+            }
+            em.getTransaction().commit();
+        }catch(Exception e) {
+            if(em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Ocorreu um erro ao tentar remover o item" + e.getMessage());
+        }
+    }
+
+
+}
