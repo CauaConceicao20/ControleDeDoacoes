@@ -74,8 +74,3 @@
 
 <h2>Nota para Instrutores</h2>
 <p>Ficaram faltando algumas features das pedidas, entre elas a transferência entre distribuidoras e a adição de um limite de 200 para cada item nos abrigos. O código acabou ficando bem bagunçado na <code>main</code> e pecando em várias coisas, principalmente na organização e validações de entradas. Acabei não gerenciando meu tempo bem e, no final, tive que dar uma apressada. Fora isso, gostei muito do desafio, sendo este meu primeiro projeto que usa o conceito de relação entre entidades tão fortemente. Agradeço pela oportunidade de crescimento.</p>
-
-<h2>Nota pra instrutores</h2>
-ficou faltando algumas features das pedidas entre elas foi a transferencia entre distribuidoras e a adição de um limite 200 para cada item nos abrigos
-O codigo acabou ficando bem bagunçado na main e pecando em varias coisas principalmente na organização e validações de entradas acabei não gerenciando meu tempo bem e no final tive que da uma rushada
-fora isso gostei muito do desafio sendo ele meu primeiro projeto que uso o conceito de relação entre entidades tão fortemente, agradeço pela oportunidade de crescimento. 
